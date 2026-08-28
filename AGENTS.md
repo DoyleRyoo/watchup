@@ -10,6 +10,7 @@ sibling_repos: [watch_up_server (backend), watch_up_infra (compose/CI/docs)]
 
 ## 0. RULE ZERO — DOUBLE CHECK IS MANDATORY
 
+- DO NOT READ .env file (MOST IMPORTANT RULE)
 - Double check is required at **every** stage: before edit, after edit, before commit, before "done".
 - Never mark work done on one pass. Run the two-pass protocol in §8.
 - Applies to: components, stores, API client, tests, config, docs. No exception.
