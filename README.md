@@ -37,7 +37,7 @@ WatchUp 프론트엔드는 Supabase Auth로 사용자를 인증하고 FastAPI �
 | 스타일 | CSS, PostCSS |
 | 테스트 | Vitest, Testing Library, jsdom |
 | 코드 품질 | ESLint, TypeScript type checking |
-| 운영 이미지 | Docker multi-stage build, Nginx |
+| 배포 | Vercel |
 
 ## 프로젝트 구조
 
@@ -55,11 +55,9 @@ watch_up_react/
 │   ├── App.tsx              # 애플리케이션 진입 컴포넌트
 │   ├── App.css              # 화면 및 반응형 스타일
 │   └── main.tsx             # React root
-├── nginx/
-│   └── default.conf         # SPA fallback 및 health endpoint
 ├── .env.example             # 프론트엔드 환경변수 예시
-├── dockerfile               # 빌드 및 Nginx 런타임 이미지
 ├── package.json             # 의존성과 실행 스크립트
+├── vercel.json              # Vercel SPA rewrite
 └── vite.config.ts           # Vite 및 Vitest 설정
 ```
 
@@ -67,7 +65,7 @@ watch_up_react/
 
 ### 요구 사항
 
-- Node.js 24 권장 — 현재 Docker 빌더 기준
+- Node.js 24 권장
 - npm
 - Google Provider가 설정된 Supabase 프로젝트
 - WatchUp FastAPI 백엔드
@@ -89,14 +87,14 @@ cp .env.example .env
 ```dotenv
 VITE_SUPABASE_URL=
 VITE_SUPABASE_ANON_KEY=
-VITE_API_BASE_URL=/api
+VITE_API_BASE_URL=http://localhost:8000/api
 ```
 
 | 변수 | 설명 |
 | --- | --- |
 | `VITE_SUPABASE_URL` | Supabase 프로젝트 URL |
 | `VITE_SUPABASE_ANON_KEY` | 브라우저용 Supabase anon key |
-| `VITE_API_BASE_URL` | FastAPI base URL. 기본값은 `/api` |
+| `VITE_API_BASE_URL` | FastAPI의 절대 base URL. 필수값이며 `/api` 포함 |
 
 실제 키를 저장소에 커밋하지 마세요. `service_role` key, Google Client Secret, Redis 또는 업비트 서버 설정은 프론트엔드 환경변수로 사용하지 않습니다.
 
@@ -106,11 +104,12 @@ VITE_API_BASE_URL=/api
 npm run dev
 ```
 
-통합 개발 환경의 공식 브라우저 주소는 [http://localhost:8080](http://localhost:8080)입니다. Edge Nginx가 React route와 HMR을 내부 Vite `:5173`으로, `/api/*`를 FastAPI `:8000`으로 전달합니다.
+로컬 브라우저 주소는 [http://localhost:5173](http://localhost:5173)입니다. API는
+`VITE_API_BASE_URL=http://localhost:8000/api`로 FastAPI에 직접 요청합니다.
 
-VS Code Dev Container에서는 `8080`만 Forward하면 됩니다. Vite를 Docker 외부에서 단독 실행하는 경우에만 `npm run dev`의 `5173`을 직접 사용합니다.
-
-`VITE_API_BASE_URL`은 개발과 운영 모두 `/api`를 유지합니다. API 함수는 endpoint에서 중복 `/api` prefix를 제거하므로 `/api/api/*` 요청을 만들지 않습니다.
+운영 Vercel 환경에서는 `VITE_API_BASE_URL=https://<render-origin>/api`를 Production과
+고정 Preview에 각각 등록합니다. 값이 없거나 절대 HTTP(S) URL이 아니면 요청은 즉시
+실패하며 same-origin 경로로 fallback하지 않습니다.
 
 ### 빌드 및 로컬 미리보기
 
@@ -119,7 +118,9 @@ npm run build
 npm run preview -- --host 0.0.0.0
 ```
 
-프로덕션 산출물은 `dist/`에 생성됩니다. 제공된 Dockerfile은 이 산출물을 Nginx로 서비스하며 컨테이너의 `/health` endpoint를 제공합니다. Vite 환경변수는 런타임이 아니라 빌드 시점에 주입되어야 합니다.
+프로덕션 산출물은 `dist/`에 생성되고 Vercel이 제공합니다. `vercel.json`의 SPA
+rewrite가 `/login`, `/auth/callback` 새로고침을 처리합니다. Vite 환경변수는 런타임이
+아니라 빌드 시점에 주입되므로 변경 후 재배포해야 합니다.
 
 ## 사용법
 

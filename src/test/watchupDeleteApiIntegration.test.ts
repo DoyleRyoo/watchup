@@ -19,7 +19,7 @@ function jsonResponse(status: number, body: unknown) {
 }
 
 beforeEach(() => {
-  vi.stubEnv('VITE_API_BASE_URL', '/api')
+  vi.stubEnv('VITE_API_BASE_URL', 'http://localhost:8000/api')
   auth.getSession.mockReset().mockResolvedValue({ data: { session }, error: null })
   auth.refreshSession.mockReset()
   auth.signOut.mockReset()
@@ -33,7 +33,7 @@ describe('삭제 API와 공통 Client 연결', () => {
     await expect(deleteWatchlistItem(17)).resolves.toEqual({ data: { id: 17 }, meta: null })
 
     const [url, init] = vi.mocked(fetch).mock.calls[0]
-    expect(url).toBe('/api/watchlist/17')
+    expect(url).toBe('http://localhost:8000/api/watchlist/17')
     expect(init?.method).toBe('DELETE')
     expect(init?.body).toBeUndefined()
     expect(new Headers(init?.headers).get('Authorization')).toBe('Bearer fake-delete-access')

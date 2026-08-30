@@ -12,7 +12,7 @@ const session = {
 } as Session
 
 beforeEach(() => {
-  vi.stubEnv('VITE_API_BASE_URL', '/api')
+  vi.stubEnv('VITE_API_BASE_URL', 'http://localhost:8000/api')
   auth.getSession.mockReset().mockResolvedValue({ data: { session }, error: null })
   auth.refreshSession.mockReset()
   auth.signOut.mockReset()
@@ -37,7 +37,7 @@ describe('차트 API와 공통 Client 연결', () => {
     await expect(getCoinChart('KRW-BTC')).resolves.toEqual(response)
 
     const [url, init] = vi.mocked(fetch).mock.calls[0]
-    expect(url).toBe('/api/coins/KRW-BTC/chart')
+    expect(url).toBe('http://localhost:8000/api/coins/KRW-BTC/chart')
     expect(init?.method).toBe('GET')
     expect(new Headers(init?.headers).get('Authorization')).toBe('Bearer fake-chart-access')
     expect(response.data).not.toHaveProperty('isStale')

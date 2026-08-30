@@ -18,7 +18,7 @@ async function loadClient() {
 }
 
 beforeEach(() => {
-  vi.stubEnv('VITE_API_BASE_URL', '/api')
+  vi.stubEnv('VITE_API_BASE_URL', 'http://localhost:8000/api')
   auth.getSession.mockReset().mockResolvedValue({ data: { session: oldSession }, error: null })
   auth.refreshSession.mockReset().mockResolvedValue({ data: { session: newSession, user: newSession.user }, error: null })
   auth.signOut.mockReset().mockResolvedValue({ error: null })
@@ -27,14 +27,28 @@ beforeEach(() => {
 
 describe('API URL과 envelope', () => {
   it.each([
-    ['/api', '/health', '/api/health'],
-    ['/api/', 'health', '/api/health'],
-    ['/api', '/api/health?ready=true', '/api/health?ready=true'],
+    ['http://localhost:8000/api', '/health', 'http://localhost:8000/api/health'],
+    ['http://localhost:8000/api/', 'health', 'http://localhost:8000/api/health'],
+    ['http://localhost:8000/api', '/api/health?ready=true', 'http://localhost:8000/api/health?ready=true'],
     ['https://api.example.test/api/', '/health?ready=true', 'https://api.example.test/api/health?ready=true'],
-    ['', '/health', '/api/health'],
   ])('base %s와 endpoint %s를 %s로 결합한다', async (base, endpoint, expected) => {
     const { joinApiUrl } = await loadClient()
     expect(joinApiUrl(base, endpoint)).toBe(expected)
+  })
+
+  it.each(['', '/api', 'ftp://api.example.test/api', 'https://api.example.test/api?target=other'])(
+    '잘못된 API base URL %s를 거절한다',
+    async (base) => {
+      const { joinApiUrl } = await loadClient()
+      expect(() => joinApiUrl(base, '/health')).toThrow('VITE_API_BASE_URL')
+    },
+  )
+
+  it('API base URL이 없으면 same-origin으로 fallback하지 않는다', async () => {
+    vi.stubEnv('VITE_API_BASE_URL', '')
+    const { apiRequest } = await loadClient()
+    await expect(apiRequest('/health', { authenticated: false })).rejects.toThrow('VITE_API_BASE_URL')
+    expect(fetch).not.toHaveBeenCalled()
   })
 
   it('공개 요청에는 session과 Authorization이 필요하지 않다', async () => {
