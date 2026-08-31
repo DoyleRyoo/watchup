@@ -13,10 +13,15 @@ import type { CoinChart } from './types'
 export function PriceChart({ chart }: { chart: CoinChart }) {
   const count = chart.candles.length
   if (count === 0) {
-    return <p className="chart-empty">데이터 없음</p>
+    return <p className="chart-empty">차트를 이용할 수 없습니다.</p>
   }
 
+  const chartData = chart.candles.map((candle) => ({
+    ...candle,
+    closingPriceValue: Number(candle.closingPrice),
+  }))
   const chartMode = count === 1 ? 'point' : 'line'
+
   return (
     <div className="chart-block">
       <div
@@ -26,11 +31,11 @@ export function PriceChart({ chart }: { chart: CoinChart }) {
         data-chart-mode={chartMode}
       >
         <ResponsiveContainer width="100%" height="100%" initialDimension={{ width: 720, height: 320 }}>
-          <LineChart data={chart.candles} accessibilityLayer margin={{ top: 12, right: 16, bottom: 4, left: 8 }}>
+          <LineChart data={chartData} accessibilityLayer margin={{ top: 12, right: 16, bottom: 4, left: 8 }}>
             <CartesianGrid strokeDasharray="3 3" vertical={false} />
             <XAxis dataKey="date" tickFormatter={formatChartDate} minTickGap={24} />
             <YAxis
-              dataKey="closingPrice"
+              dataKey="closingPriceValue"
               domain={['auto', 'auto']}
               tickFormatter={(value: number) => formatPrice(value)?.replace(/원$/, '') ?? ''}
               width={88}
@@ -41,7 +46,7 @@ export function PriceChart({ chart }: { chart: CoinChart }) {
             />
             <Line
               type="linear"
-              dataKey="closingPrice"
+              dataKey="closingPriceValue"
               name="종가"
               stroke="var(--primary)"
               strokeWidth={2}

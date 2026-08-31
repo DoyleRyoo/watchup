@@ -13,8 +13,13 @@ describe('차트 feature API', () => {
     const response = {
       data: {
         marketCode: 'KRW/BTC ?',
+        koreanName: '테스트',
+        englishName: 'Test',
+        marketStatus: 'ACTIVE' as const,
+        currentPrice: '100',
+        priceStatus: 'FRESH' as const,
         period: '30d' as const,
-        candles: [{ date: '2026-06-16', closingPrice: 100 }],
+        candles: [{ date: '2026-06-16', closingPrice: '100' }],
       },
       meta: { count: 1 },
     }

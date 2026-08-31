@@ -24,8 +24,13 @@ describe('차트 API와 공통 Client 연결', () => {
     const response = {
       data: {
         marketCode: 'KRW-BTC',
+        koreanName: '비트코인',
+        englishName: 'Bitcoin',
+        marketStatus: 'ACTIVE',
+        currentPrice: '142300000',
+        priceStatus: 'FRESH',
         period: '30d',
-        candles: [{ date: '2026-06-16', closingPrice: 100 }],
+        candles: [{ date: '2026-06-16', closingPrice: '100' }],
       },
       meta: { count: 1 },
     }
