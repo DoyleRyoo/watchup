@@ -5,7 +5,7 @@ import { ApiError, createAuthRequiredError, createContractError } from './errors
 import type { ApiErrorEnvelope, ApiSuccess } from './types'
 
 const SESSION_EXPIRED_MESSAGE = '로그인이 만료되었습니다. 다시 로그인해주세요.'
-const DEFAULT_API_BASE_URL = '/api'
+const API_BASE_URL_ERROR = 'VITE_API_BASE_URL must be an absolute HTTP(S) URL'
 
 export type ApiRequestOptions = {
   method?: string
@@ -19,16 +19,34 @@ let refreshInFlight: Promise<Session | null> | null = null
 let expirationInFlight: Promise<void> | null = null
 let expirationHandled = false
 
+function normalizeApiBaseUrl(value: string): string {
+  const normalized = value.trim().replace(/\/+$/, '')
+  let parsed: URL
+  try {
+    parsed = new URL(normalized)
+  } catch {
+    throw new Error(API_BASE_URL_ERROR)
+  }
+  if (
+    !['http:', 'https:'].includes(parsed.protocol)
+    || parsed.username
+    || parsed.password
+    || parsed.search
+    || parsed.hash
+  ) {
+    throw new Error(API_BASE_URL_ERROR)
+  }
+  return normalized
+}
+
 function configuredBaseUrl(): string {
-  return import.meta.env.VITE_API_BASE_URL?.trim() || DEFAULT_API_BASE_URL
+  return normalizeApiBaseUrl(import.meta.env.VITE_API_BASE_URL ?? '')
 }
 
 export function joinApiUrl(baseUrl: string, endpoint: string): string {
-  const base = (baseUrl.trim() || DEFAULT_API_BASE_URL).replace(/\/+$/, '')
+  const base = normalizeApiBaseUrl(baseUrl)
   let relativeEndpoint = endpoint.trim().replace(/^\/+/, '')
-  const basePath = base.startsWith('http://') || base.startsWith('https://')
-    ? new URL(base).pathname
-    : base
+  const basePath = new URL(base).pathname
   const normalizedBasePath = basePath.replace(/^\/+|\/+$/g, '')
 
   if (normalizedBasePath && (relativeEndpoint === normalizedBasePath || relativeEndpoint.startsWith(`${normalizedBasePath}/`))) {

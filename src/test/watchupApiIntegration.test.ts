@@ -19,7 +19,7 @@ function jsonResponse(status: number, body: unknown) {
 }
 
 beforeEach(() => {
-  vi.stubEnv('VITE_API_BASE_URL', '/api')
+  vi.stubEnv('VITE_API_BASE_URL', 'http://localhost:8000/api')
   auth.getSession.mockReset().mockResolvedValue({ data: { session }, error: null })
   auth.refreshSession.mockReset()
   auth.signOut.mockReset()
@@ -81,12 +81,12 @@ describe('WatchUp feature API와 공통 Client 연결', () => {
 
     const [postUrl, postInit] = vi.mocked(fetch).mock.calls[0]
     const [getUrl, getInit] = vi.mocked(fetch).mock.calls[1]
-    expect(postUrl).toBe('/api/watchlist')
+    expect(postUrl).toBe('http://localhost:8000/api/watchlist')
     expect(postInit?.method).toBe('POST')
     expect(postInit?.body).toBe('{"marketCode":"KRW-BTC"}')
     expect(Object.keys(JSON.parse(String(postInit?.body)) as Record<string, unknown>)).toEqual(['marketCode'])
     expect(registered.meta).toBeNull()
-    expect(getUrl).toBe('/api/watchlist')
+    expect(getUrl).toBe('http://localhost:8000/api/watchlist')
     expect(getInit?.method).toBe('GET')
     expect(watchlist.data[0]).toMatchObject({
       status: 'PRICE_ERROR',
