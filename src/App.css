@@ -20,7 +20,7 @@ button:disabled { cursor: not-allowed; opacity: .65; }
 .error-message { color: var(--danger); }
 .error-message p { margin: 0; }
 .error-message p + p { margin-top: 4px; }
-.search-results, .watchlist { display: grid; gap: 12px; margin: 20px 0 0; padding: 0; list-style: none; }
+.search-results { display: grid; gap: 12px; margin: 20px 0 0; padding: 0; list-style: none; }
 .search-result-item { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 16px; border: 1px solid var(--border); border-radius: 12px; }
 .search-result-item div { display: grid; gap: 6px; }
 .search-result-item span, .coin-identity > span:last-child, .detail-heading p { color: #5d687d; }
@@ -29,11 +29,6 @@ button:disabled { cursor: not-allowed; opacity: .65; }
 .empty-state { color: #5d687d; }
 .empty-state p { margin: 0; }
 .empty-state p + p { margin-top: 6px; }
-.watchlist-item { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 8px; overflow: hidden; border: 1px solid var(--border); border-radius: 10px; background: var(--surface); }
-.watchlist-item:hover { border-color: var(--primary); background: #f8faff; }
-.watchlist-item.selected { border: 2px solid var(--primary); background: #eff6ff; box-shadow: inset 4px 0 0 var(--primary); }
-.watchlist-select { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 20px; min-width: 0; width: 100%; padding: 17px 12px 17px 18px; background: transparent; color: inherit; text-align: left; }
-.watchlist-select:hover:not(:disabled) { background: transparent; }
 .coin-identity { display: grid; min-width: 0; gap: 6px; }
 .coin-name-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; min-width: 0; }
 .coin-name-row strong { overflow-wrap: anywhere; }
@@ -68,7 +63,6 @@ button:disabled { cursor: not-allowed; opacity: .65; }
   .search-area, .dashboard-panel { padding: 24px; }
   .search-controls, .search-result-item { align-items: stretch; flex-direction: column; }
   .dashboard-grid { grid-template-columns: 1fr; gap: 0; }
-  .watchlist-select { grid-template-columns: 1fr; gap: 12px; }
   .market-price.compact { justify-items: start; text-align: left; }
   .price-chart-canvas { height: 280px; }
 }

@@ -1,6 +1,6 @@
 import type { Session } from '@supabase/supabase-js'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { getWatchlist, registerWatchlist, searchCoins } from '../features/watchup/api'
+import { searchCoins } from '../features/watchup/api'
 
 const auth = vi.hoisted(() => ({ getSession: vi.fn(), refreshSession: vi.fn(), signOut: vi.fn() }))
 vi.mock('../lib/supabase', () => ({ getSupabaseClient: () => ({ auth }) }))
@@ -46,53 +46,5 @@ describe('WatchUp feature API와 공통 Client 연결', () => {
       data: [{ marketCode: 'KRW-BTC', koreanName: '비트코인', englishName: 'Bitcoin', status: 'ACTIVE' }],
       meta: { count: 1 },
     })
-  })
-
-  it('등록 201과 목록 GET을 공통 Client 계약 그대로 처리한다', async () => {
-    vi.mocked(fetch)
-      .mockResolvedValueOnce(jsonResponse(201, {
-        data: {
-          id: 1,
-          marketCode: 'KRW-BTC',
-          koreanName: '비트코인',
-          englishName: 'Bitcoin',
-          createdAt: '2026-08-01T00:00:00Z',
-        },
-        meta: null,
-      }))
-      .mockResolvedValueOnce(jsonResponse(200, {
-        data: [{
-          id: 1,
-          marketCode: 'KRW-BTC',
-          koreanName: '비트코인',
-          englishName: 'Bitcoin',
-          symbol: 'BTC',
-          currentPrice: null,
-          signedChangeRate: null,
-          status: 'PRICE_ERROR',
-          isStale: false,
-          createdAt: '2026-08-01T00:00:00Z',
-        }],
-        meta: { count: 1 },
-      }))
-
-    const registered = await registerWatchlist('KRW-BTC')
-    const watchlist = await getWatchlist()
-
-    const [postUrl, postInit] = vi.mocked(fetch).mock.calls[0]
-    const [getUrl, getInit] = vi.mocked(fetch).mock.calls[1]
-    expect(postUrl).toBe('http://localhost:8000/api/watchlist')
-    expect(postInit?.method).toBe('POST')
-    expect(postInit?.body).toBe('{"marketCode":"KRW-BTC"}')
-    expect(Object.keys(JSON.parse(String(postInit?.body)) as Record<string, unknown>)).toEqual(['marketCode'])
-    expect(registered.meta).toBeNull()
-    expect(getUrl).toBe('http://localhost:8000/api/watchlist')
-    expect(getInit?.method).toBe('GET')
-    expect(watchlist.data[0]).toMatchObject({
-      status: 'PRICE_ERROR',
-      currentPrice: null,
-      signedChangeRate: null,
-    })
-    expect(auth.refreshSession).not.toHaveBeenCalled()
   })
 })

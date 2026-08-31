@@ -3,10 +3,10 @@ import {
   formatPrice,
   getChangeRateDirection,
 } from './formatters'
-import type { WatchlistItem } from './types'
+import type { MarketPriceItem } from './types'
 
 type MarketPriceProps = {
-  item: WatchlistItem
+  item: MarketPriceItem
   compact?: boolean
 }
 

@@ -9,13 +9,12 @@ export function DetailArea() {
   const chartLoading = useWatchupStore((state) => state.chartLoading)
   const chartError = useWatchupStore((state) => state.chartError)
   const loadSelectedChart = useWatchupStore((state) => state.loadSelectedChart)
-  const selectedId = selectedCoin?.id
   const selectedMarketCode = selectedCoin?.marketCode
   const selectedStatus = selectedCoin?.status
 
   useEffect(() => {
     void loadSelectedChart()
-  }, [loadSelectedChart, selectedId, selectedMarketCode, selectedStatus])
+  }, [loadSelectedChart, selectedMarketCode, selectedStatus])
 
   return (
     <section className="dashboard-panel detail-area" aria-labelledby="detail-title">

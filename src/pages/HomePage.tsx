@@ -1,8 +1,6 @@
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { DetailArea } from '../features/watchup/DetailArea'
 import { SearchArea } from '../features/watchup/SearchArea'
-import { WatchlistArea } from '../features/watchup/WatchlistArea'
 import { getSupabaseClient } from '../lib/supabase'
 import { useAuthStore } from '../stores/authStore'
 import { useWatchupStore } from '../stores/watchupStore'
@@ -14,11 +12,9 @@ export function HomePage() {
   const navigate = useNavigate()
   const loading = useAuthStore((state) => state.logoutLoading)
   const error = useAuthStore((state) => state.authError)
-  const loadInitialWatchlist = useWatchupStore((state) => state.loadInitialWatchlist)
 
   useEffect(() => {
     dashboardMountCount += 1
-    void loadInitialWatchlist()
 
     return () => {
       dashboardMountCount -= 1
@@ -26,7 +22,7 @@ export function HomePage() {
         if (dashboardMountCount === 0) useWatchupStore.getState().cancelPendingRequests()
       })
     }
-  }, [loadInitialWatchlist])
+  }, [])
 
   const logout = async () => {
     if (useAuthStore.getState().logoutLoading) return
@@ -58,9 +54,5 @@ export function HomePage() {
     </header>
     {error && <p role="alert">{error}</p>}
     <SearchArea />
-    <div className="dashboard-grid">
-      <WatchlistArea />
-      <DetailArea />
-    </div>
   </main>
 }
