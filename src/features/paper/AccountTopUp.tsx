@@ -2,9 +2,13 @@ import { useEffect, useState } from "react";
 import type { FormEvent } from "react";
 import { usePaperStore } from "../../stores/paperStore";
 
+/**
+ * Top-up form (FE-BE-05). The balance readout the mockup shows lives in
+ * `AccountSummary`; this component owns the `GET /api/paper/account` fetch that
+ * feeds it, so the numbers are not duplicated on screen.
+ */
 export function AccountTopUp() {
   const [amountKrw, setAmountKrw] = useState("");
-  const account = usePaperStore((state) => state.account);
   const loading = usePaperStore((state) => state.loading);
   const error = usePaperStore((state) => state.error);
   const loadAccount = usePaperStore((state) => state.loadAccount);
@@ -31,31 +35,17 @@ export function AccountTopUp() {
       className="dashboard-panel account-panel"
       aria-labelledby="paper-account-heading"
     >
-      <h2 id="paper-account-heading">모의투자 계좌</h2>
-      {account && (
-        <dl className="account-summary">
-          <div>
-            <dt>보유 현금</dt>
-            <dd>{account.cashBalanceKrw}원</dd>
-          </div>
-          <div>
-            <dt>누적 충전</dt>
-            <dd>{account.lifetimeTopUpKrw}원</dd>
-          </div>
-        </dl>
-      )}
-      {!account && loading && (
-        <p className="status-message">계좌를 불러오는 중입니다.</p>
-      )}
+      <h2 id="paper-account-heading">모의투자 충전</h2>
       {error && <p role="alert">{error.message}</p>}
       <form className="top-up-form" onSubmit={(event) => void submit(event)}>
         <label htmlFor="top-up-amount">충전 금액</label>
-        <div className="search-controls">
+        <div className="top-up-controls">
           <input
             id="top-up-amount"
             name="amountKrw"
             type="text"
             inputMode="numeric"
+            placeholder="충전할 금액을 입력하세요"
             value={amountKrw}
             onChange={(event) => setAmountKrw(event.target.value)}
             disabled={loading}

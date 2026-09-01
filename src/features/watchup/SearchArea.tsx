@@ -6,6 +6,9 @@ import type { SearchResult } from './types'
 const SEARCH_DEBOUNCE_MS = 300
 const SEARCH_ERROR_LINES = ['코인 검색에 실패했습니다.', '잠시 후 다시 시도해주세요.']
 
+/** Shared with the header search icon on HomePage — no new route, one form. */
+export const SEARCH_INPUT_ID = 'coin-search'
+
 function displaySymbol(marketCode: string): string {
   return marketCode.startsWith('KRW-') && marketCode.length > 4
     ? marketCode.slice(4)
@@ -77,20 +80,26 @@ export function SearchArea() {
   return (
     <section className="search-area" aria-labelledby="search-title">
       <h2 id="search-title">코인 검색</h2>
-      <label htmlFor="coin-search">코인명</label>
-      <input
-        id="coin-search"
-        name="query"
-        type="search"
-        role="searchbox"
-        value={searchQuery}
-        onChange={(event) => setSearchQuery(event.target.value)}
-        onKeyDown={handleKeyDown}
-        placeholder="코인명을 입력하세요."
-        autoComplete="off"
-        aria-controls="coin-search-results"
-        aria-activedescendant={selectedIndex >= 0 ? `coin-search-result-${selectedIndex}` : undefined}
-      />
+      <label htmlFor={SEARCH_INPUT_ID}>코인명</label>
+      <div className="search-field">
+        <svg width="18" height="18" viewBox="0 0 22 22" aria-hidden="true" focusable="false">
+          <circle cx="9.5" cy="9.5" r="7" fill="none" stroke="currentColor" strokeWidth="2" />
+          <path d="m15 15 5 5" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
+        </svg>
+        <input
+          id={SEARCH_INPUT_ID}
+          name="query"
+          type="search"
+          role="searchbox"
+          value={searchQuery}
+          onChange={(event) => setSearchQuery(event.target.value)}
+          onKeyDown={handleKeyDown}
+          placeholder="당신이 원하는 모든 투자"
+          autoComplete="off"
+          aria-controls="coin-search-results"
+          aria-activedescendant={selectedIndex >= 0 ? `coin-search-result-${selectedIndex}` : undefined}
+        />
+      </div>
 
       {searchLoading && <p role="status" className="status-message">코인을 검색하는 중입니다.</p>}
       {searchError && <Message lines={SEARCH_ERROR_LINES} />}
@@ -102,14 +111,19 @@ export function SearchArea() {
             <li
               id={`coin-search-result-${index}`}
               key={result.marketCode}
-              className={`search-result-item${index === selectedIndex ? ' selected' : ''}`}
+              className={`coin-row search-result-item${index === selectedIndex ? ' selected' : ''}`}
               role="option"
               aria-selected={index === selectedIndex}
               onMouseDown={(event) => event.preventDefault()}
               onClick={() => navigateToResult(result)}
             >
-              <strong>{result.koreanName} ({displaySymbol(result.marketCode)})</strong>
-              <span>{result.marketCode}</span>
+              <span className="coin-row-main">
+                <span className="coin-row-title">
+                  <span className="coin-name">{result.koreanName}</span>
+                  <span className="coin-symbol">{displaySymbol(result.marketCode)}</span>
+                </span>
+                <span className="coin-row-sub">{result.marketCode}</span>
+              </span>
             </li>
           ))}
         </ul>

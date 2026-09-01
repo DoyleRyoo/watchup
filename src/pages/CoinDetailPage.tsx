@@ -2,6 +2,12 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { ApiError, createContractError } from "../api/errors";
 import { BuyForm } from "../features/paper/BuyForm";
+import {
+  formatDecimalString,
+  formatKrw,
+  formatSignedKrw,
+  signClass,
+} from "../features/paper/format";
 import { SellForm } from "../features/paper/SellForm";
 import { getCoinChart } from "../features/watchup/api";
 import { PriceChart } from "../features/watchup/PriceChart";
@@ -37,6 +43,12 @@ function priceStatusLabel(status: CoinChart["priceStatus"]): string {
   if (status === "STALE") return "지연 가격";
   if (status === "PRICE_ERROR") return "가격 조회 실패";
   return "최신 가격";
+}
+
+function displaySymbol(marketCode: string): string {
+  return marketCode.startsWith("KRW-") && marketCode.length > 4
+    ? marketCode.slice(4)
+    : marketCode;
 }
 
 export function CoinDetailPage() {
@@ -89,10 +101,18 @@ export function CoinDetailPage() {
 
   return (
     <main className="app-shell">
-      <header className="app-header">
-        <h1>WatchUp</h1>
-        <Link className="back-link" to="/">
-          검색으로 돌아가기
+      <header className="app-header detail-header">
+        <Link className="icon-button back-link" to="/" aria-label="검색으로 돌아가기">
+          <svg width="23" height="18" viewBox="0 0 23 18" aria-hidden="true" focusable="false">
+            <path
+              d="M9 1 1 9l8 8M1 9h21"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
         </Link>
       </header>
 
@@ -101,7 +121,7 @@ export function CoinDetailPage() {
         aria-labelledby="detail-title"
       >
         <h2 id="detail-title">코인 상세</h2>
-        {loading && <p role="status">코인 정보를 불러오는 중입니다.</p>}
+        {loading && <p role="status" className="status-message">코인 정보를 불러오는 중입니다.</p>}
         {error && (
           <div role="alert" className="status-message error-message">
             {DETAIL_ERROR_LINES.map((line) => (
@@ -112,13 +132,25 @@ export function CoinDetailPage() {
 
         {!loading && !error && chart && (
           <div className="coin-detail">
-            <div className="detail-heading">
-              <div>
-                <h3>
-                  {chart.koreanName} <span>{chart.englishName}</span>
-                </h3>
-                <p>{chart.marketCode}</p>
-              </div>
+            <div className="coin-headline">
+              <h3 className="coin-row-title">
+                <span className="coin-name">{chart.koreanName}</span>
+                <span className="coin-symbol">
+                  {displaySymbol(chart.marketCode)}
+                </span>
+              </h3>
+              <p className="coin-price">
+                {chart.currentPrice === null
+                  ? "조회 불가"
+                  : formatKrw(chart.currentPrice)}
+              </p>
+              {holding && (
+                <p
+                  className={`coin-pnl ${signClass(holding.unrealizedPnlKrw)}`}
+                >
+                  {formatSignedKrw(holding.unrealizedPnlKrw, "평가 불가")}
+                </p>
+              )}
               <span
                 className={`status-badge ${chart.marketStatus === "CAUTION" ? "caution-badge" : ""}`}
               >
@@ -128,12 +160,12 @@ export function CoinDetailPage() {
 
             <dl className="detail-metrics">
               <div>
-                <dt>현재가</dt>
-                <dd>
-                  {chart.currentPrice === null
-                    ? "조회 불가"
-                    : `${chart.currentPrice}원`}
-                </dd>
+                <dt>영문명</dt>
+                <dd>{chart.englishName}</dd>
+              </div>
+              <div>
+                <dt>마켓 코드</dt>
+                <dd>{chart.marketCode}</dd>
               </div>
               <div>
                 <dt>가격 상태</dt>
@@ -143,15 +175,11 @@ export function CoinDetailPage() {
               </div>
               <div>
                 <dt>사용 가능 현금</dt>
-                <dd>
-                  {(cashBalanceKrw ?? account?.cashBalanceKrw)
-                    ? `${cashBalanceKrw ?? account?.cashBalanceKrw}원`
-                    : "조회 중"}
-                </dd>
+                <dd>{formatKrw(cashBalanceKrw ?? account?.cashBalanceKrw ?? null, "조회 중")}</dd>
               </div>
               <div>
                 <dt>보유 수량</dt>
-                <dd>{holding?.quantity ?? "0"}</dd>
+                <dd>{formatDecimalString(holding?.quantity ?? "0")}</dd>
               </div>
             </dl>
 
@@ -164,17 +192,20 @@ export function CoinDetailPage() {
               )}
             </div>
 
-            <div className="trade-placeholders" aria-label="거래 입력">
+            <div className="trade-panel" aria-label="거래 입력">
               <BuyForm
                 marketCode={chart.marketCode}
                 disabled={chart.marketStatus === "UNAVAILABLE"}
                 onSuccess={() => setRefreshNonce((value) => value + 1)}
               />
-              <SellForm
-                marketCode={chart.marketCode}
-                disabled={chart.marketStatus === "UNAVAILABLE" || !holding}
-                onSuccess={() => setRefreshNonce((value) => value + 1)}
-              />
+              {holding && (
+                <SellForm
+                  marketCode={chart.marketCode}
+                  disabled={chart.marketStatus === "UNAVAILABLE"}
+                  availableQuantity={holding.quantity}
+                  onSuccess={() => setRefreshNonce((value) => value + 1)}
+                />
+              )}
             </div>
             {portfolioError && (
               <p role="alert">보유 자산을 갱신하지 못했습니다.</p>

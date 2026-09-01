@@ -1,2 +1,78 @@
-:root { font-family: Inter, Pretendard, system-ui, sans-serif; color: #172033; background: #f6f8fc; font-synthesis: none; text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; --surface: #fff; --border: #dbe2ee; --primary: #2563eb; --primary-hover: #1d4ed8; --focus: #93c5fd; --danger: #b42318; --shadow: 0 18px 45px rgb(30 41 59 / 10%); }
-* { box-sizing: border-box; } body { margin: 0; min-width: 320px; min-height: 100svh; } h1, h2, p { overflow-wrap: anywhere; }
+/* Pretendard — npm package `pretendard`, only the two weights the type scale uses. */
+@font-face {
+  font-family: 'Pretendard';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('pretendard/dist/web/static/woff2/Pretendard-Regular.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Pretendard';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('pretendard/dist/web/static/woff2/Pretendard-Bold.woff2') format('woff2');
+}
+
+/* Light tokens — watch_up_infra/UI/design.md (white version). */
+:root {
+  /* design.md */
+  --bg: #F5F5F5;
+  --hover: #DDDEE0;
+  --text-main: #333333;
+  --text-sub: #848484;
+  --danger: #E11616;
+  --primary: #1667E1;
+
+  /* derived / kept names used across App.css */
+  --surface: #FFFFFF;
+  --border: #DDDEE0;
+  --primary-hover: #1155C4;
+  --danger-hover: #C01212;
+  --focus: #1667E1;
+  --shadow: 0 18px 45px rgb(51 51 51 / 8%);
+
+  /* type scale — design.md: important 26/bold, basic 16/regular, minor 10/regular */
+  --font-size-lg: 26px;
+  --font-size-md: 16px;
+  --font-size-sm: 10px;
+  --font-weight-lg: 700;
+  --font-weight-md: 400;
+  --font-weight-sm: 400;
+
+  font-family: Pretendard, system-ui, -apple-system, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-md);
+  line-height: 1.4;
+  color: var(--text-main);
+  background: var(--bg);
+  color-scheme: light dark;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Dark tokens — design.md (black version) + UI/*_black*.jsx.
+   Layout/typography identical; only colors swap.
+   NOTE: design.md's black block lists "main font color: #333333", which is
+   unreadable on #171719 and contradicts every *_black*.jsx (main #F5F5F5,
+   sub #848484). The mockups are followed here. */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #171719;
+    --hover: #222224;
+    --text-main: #F5F5F5;
+    --text-sub: #848484;
+    --danger: #E11616;
+    --primary: #1667E1;
+    --surface: #222224;
+    --border: #222224;
+    --primary-hover: #2B7BF5;
+    --danger-hover: #F03030;
+    --shadow: 0 18px 45px rgb(0 0 0 / 45%);
+  }
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; min-width: 320px; min-height: 100svh; background: var(--bg); color: var(--text-main); }
+h1, h2, h3, p { overflow-wrap: anywhere; }

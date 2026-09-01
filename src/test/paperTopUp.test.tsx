@@ -28,7 +28,7 @@ beforeEach(() => {
 
 it("계좌를 불러오고 새 키로 충전한 뒤 계좌를 다시 조회한다", async () => {
   render(<AccountTopUp />);
-  expect(await screen.findByText("1000000원")).toBeInTheDocument();
+  await waitFor(() => expect(api.getAccount).toHaveBeenCalledTimes(1));
   fireEvent.change(screen.getByLabelText("충전 금액"), {
     target: { value: "1000" },
   });

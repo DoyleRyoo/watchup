@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { ApiError, createContractError } from "../../api/errors";
 import { getTrades, type PaperTransaction, type TradeHistoryMeta } from "./api";
+import { formatSignedKrw, signClass } from "./format";
 
 const TYPE_LABELS: Record<PaperTransaction["type"], string> = {
   INITIAL_GRANT: "초기 지급",
@@ -59,24 +60,36 @@ export function TradeHistory() {
     >
       <h2 id="history-title">거래 내역</h2>
       {loading && items.length === 0 && (
-        <p role="status">거래 내역을 불러오는 중입니다.</p>
+        <p role="status" className="status-message">
+          거래 내역을 불러오는 중입니다.
+        </p>
       )}
       {error && (
         <div role="alert">
           <p>거래 내역을 불러오지 못했습니다.</p>
-          <button type="button" onClick={() => void load(lastId)}>
+          <button
+            type="button"
+            className="text-button"
+            onClick={() => void load(lastId)}
+          >
             다시 시도
           </button>
         </div>
       )}
-      {!loading && !error && items.length === 0 && <p>거래 내역이 없습니다.</p>}
+      {!loading && !error && items.length === 0 && (
+        <div className="empty-state">
+          <p>거래 내역이 없습니다.</p>
+        </div>
+      )}
       {items.length > 0 && (
         <ol className="trade-history-list">
           {items.map((item) => (
             <li key={item.id}>
-              <strong>{TYPE_LABELS[item.type]}</strong>
-              <span>{item.marketCode ?? "원화"}</span>
-              <span>{item.cashDeltaKrw}원</span>
+              <span className="trade-type">{TYPE_LABELS[item.type]}</span>
+              <span className={`trade-amount ${signClass(item.cashDeltaKrw)}`}>
+                {formatSignedKrw(item.cashDeltaKrw)}
+              </span>
+              <span className="trade-market">{item.marketCode ?? "원화"}</span>
               <time dateTime={item.createdAt}>{item.createdAt}</time>
             </li>
           ))}
@@ -85,6 +98,7 @@ export function TradeHistory() {
       {!error && meta.hasMore && lastId && (
         <button
           type="button"
+          className="load-older"
           disabled={loading}
           onClick={() => void load(lastId)}
         >
