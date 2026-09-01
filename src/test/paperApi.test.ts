@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { getAccount, topUp } from "../features/paper/api";
+import { getAccount, getTrades, topUp } from "../features/paper/api";
 
 const apiRequest = vi.hoisted(() => vi.fn());
 vi.mock("../api/client", () => ({ apiRequest }));
@@ -43,5 +43,19 @@ describe("paper API", () => {
     expect(JSON.stringify(apiRequest.mock.calls[0])).not.toContain(
       "executionPrice",
     );
+  });
+
+  it("거래 내역 cursor를 쿼리로 전달하고 watchlist를 호출하지 않는다", async () => {
+    const response = { data: [], meta: { count: 0, hasMore: false } };
+    apiRequest.mockResolvedValue(response);
+
+    await expect(getTrades({ limit: 20, beforeId: "123" })).resolves.toBe(
+      response,
+    );
+    expect(apiRequest).toHaveBeenCalledWith(
+      "/paper/trades?limit=20&beforeId=123",
+      { signal: undefined },
+    );
+    expect(apiRequest.mock.calls.flat().join(" ")).not.toContain("/watchlist");
   });
 });

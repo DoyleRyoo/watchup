@@ -103,3 +103,27 @@ export function getPortfolio(
     signal,
   }) as Promise<ApiSuccess<PaperPortfolio, { count: number }>>;
 }
+
+export type TradeHistoryParams = {
+  limit?: number;
+  beforeId?: string;
+};
+
+export type TradeHistoryMeta = {
+  count: number;
+  hasMore: boolean;
+};
+
+export function getTrades(
+  params: TradeHistoryParams = {},
+  signal?: AbortSignal,
+): Promise<ApiSuccess<PaperTransaction[], TradeHistoryMeta>> {
+  const query = new URLSearchParams();
+  if (params.limit !== undefined) query.set("limit", String(params.limit));
+  if (params.beforeId !== undefined) query.set("beforeId", params.beforeId);
+  const suffix = query.size === 0 ? "" : `?${query.toString()}`;
+  return apiRequest<PaperTransaction[], TradeHistoryMeta>(
+    `/paper/trades${suffix}`,
+    { signal },
+  );
+}
