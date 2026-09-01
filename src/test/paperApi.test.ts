@@ -26,4 +26,22 @@ describe("paper API", () => {
       signal: undefined,
     });
   });
+
+  it("거래 body와 Idempotency-Key를 전달하고 표시 가격은 보내지 않는다", async () => {
+    apiRequest.mockResolvedValue({ data: { id: "3" }, meta: null });
+    const { postTrade } = await import("../features/paper/api");
+    await postTrade(
+      { marketCode: "KRW-BTC", side: "BUY", amountKrw: "1000" },
+      "trade-key",
+    );
+    expect(apiRequest).toHaveBeenCalledWith("/paper/trades", {
+      method: "POST",
+      body: { marketCode: "KRW-BTC", side: "BUY", amountKrw: "1000" },
+      headers: { "Idempotency-Key": "trade-key" },
+      signal: undefined,
+    });
+    expect(JSON.stringify(apiRequest.mock.calls[0])).not.toContain(
+      "executionPrice",
+    );
+  });
 });

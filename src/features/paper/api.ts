@@ -42,3 +42,28 @@ export function topUp(
     signal,
   });
 }
+
+export type BuyTradeBody = {
+  marketCode: string;
+  side: "BUY";
+  amountKrw: string;
+};
+export type SellTradeBody = {
+  marketCode: string;
+  side: "SELL";
+  quantity: string;
+};
+export type TradeBody = BuyTradeBody | SellTradeBody;
+
+export function postTrade(
+  body: TradeBody,
+  idempotencyKey: string,
+  signal?: AbortSignal,
+): Promise<ApiSuccess<PaperTransaction>> {
+  return apiRequest<PaperTransaction>("/paper/trades", {
+    method: "POST",
+    body,
+    headers: { "Idempotency-Key": idempotencyKey },
+    signal,
+  });
+}
