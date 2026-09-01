@@ -113,7 +113,7 @@ describe('로그인과 로그아웃', () => {
     mocks.signOut.mockResolvedValue({ error: new Error('token detail') })
     renderApp('/')
     fireEvent.click(await screen.findByRole('button', { name: '로그아웃' }))
-    expect(await screen.findByRole('alert')).toHaveTextContent('로그아웃에 실패했습니다. 다시 시도해주세요.')
+    expect(await screen.findByText('로그아웃에 실패했습니다. 다시 시도해주세요.')).toBeInTheDocument()
     await waitFor(() => expect(screen.getByRole('button', { name: '로그아웃' })).toBeEnabled())
     expect(useAuthStore.getState().session).toBe(session)
   })

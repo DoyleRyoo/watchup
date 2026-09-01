@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { AccountTopUp } from '../features/paper/AccountTopUp'
 import { SearchArea } from '../features/watchup/SearchArea'
 import { getSupabaseClient } from '../lib/supabase'
 import { useAuthStore } from '../stores/authStore'
@@ -53,6 +54,7 @@ export function HomePage() {
       </button>
     </header>
     {error && <p role="alert">{error}</p>}
+    <AccountTopUp />
     <SearchArea />
   </main>
 }

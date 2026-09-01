@@ -16,8 +16,8 @@ button:disabled { cursor: not-allowed; opacity: .65; }
 .search-area > label { display: inline-block; margin-bottom: 8px; font-weight: 700; }
 .back-link { color: var(--primary); font-weight: 700; }
 .search-controls { display: flex; align-items: stretch; gap: 12px; }
-.search-controls input, .search-area > input, .trade-placeholders input { width: 100%; min-height: 44px; padding: 10px 14px; border: 1px solid var(--border); border-radius: 10px; color: inherit; background: var(--surface); font: inherit; }
-.search-controls input:focus-visible, .search-area > input:focus-visible, .trade-placeholders input:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+.search-controls input, .search-area > input, .trade-placeholders input, .top-up-form input { width: 100%; min-height: 44px; padding: 10px 14px; border: 1px solid var(--border); border-radius: 10px; color: inherit; background: var(--surface); font: inherit; }
+.search-controls input:focus-visible, .search-area > input:focus-visible, .trade-placeholders input:focus-visible, .top-up-form input:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
 .status-message { margin: 20px 0 0; }
 .error-message { color: var(--danger); }
 .error-message p { margin: 0; }
@@ -80,3 +80,9 @@ button:disabled { cursor: not-allowed; opacity: .65; }
   .market-price.compact { justify-items: start; text-align: left; }
   .price-chart-canvas { height: 280px; }
 }
+
+.account-summary { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 0 0 24px; }
+.account-summary div { padding: 16px; border-radius: 12px; background: #f6f8fc; }
+.account-summary dt { color: #5d687d; font-size: .85rem; }
+.account-summary dd { margin: 8px 0 0; font-weight: 800; }
+.top-up-form label { display: inline-block; margin-bottom: 8px; font-weight: 700; }
