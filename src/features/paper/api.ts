@@ -67,3 +67,39 @@ export function postTrade(
     signal,
   });
 }
+
+export type PortfolioPriceStatus = "FRESH" | "STALE" | "PRICE_ERROR";
+export type ValuationStatus = "FRESH" | "STALE" | "PARTIAL";
+
+export type PaperHolding = {
+  marketCode: string;
+  koreanName: string;
+  englishName: string;
+  quantity: string;
+  costBasisKrw: string;
+  avgPriceKrw: string | null;
+  currentPrice: string | null;
+  priceStatus: PortfolioPriceStatus;
+  unrealizedPnlKrw: string | null;
+  valueKrw: string | null;
+};
+
+export type PaperPortfolio = {
+  cashBalanceKrw: string;
+  holdings: PaperHolding[];
+  totalHoldingsValueKrw: string | null;
+  totalUnrealizedPnlKrw: string | null;
+  totalRealizedPnlKrw: string;
+  totalAssetsKrw: string | null;
+  totalPnlKrw: string | null;
+  totalReturnRate: string | null;
+  valuationStatus: ValuationStatus;
+};
+
+export function getPortfolio(
+  signal?: AbortSignal,
+): Promise<ApiSuccess<PaperPortfolio, { count: number }>> {
+  return apiRequest<PaperPortfolio, { count: number }>("/paper/portfolio", {
+    signal,
+  }) as Promise<ApiSuccess<PaperPortfolio, { count: number }>>;
+}

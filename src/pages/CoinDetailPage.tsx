@@ -43,14 +43,16 @@ export function CoinDetailPage() {
   const { marketCode } = useParams<{ marketCode: string }>();
   const [result, setResult] = useState<DetailResult | null>(null);
   const [refreshNonce, setRefreshNonce] = useState(0);
+  const cashBalanceKrw = usePaperStore((state) => state.cashBalanceKrw);
   const account = usePaperStore((state) => state.account);
+  const holdings = usePaperStore((state) => state.holdings);
+  const portfolioError = usePaperStore((state) => state.portfolioError);
   const tradeError = usePaperStore((state) => state.tradeError);
-  const loadAccount = usePaperStore((state) => state.loadAccount);
+  const refreshPortfolio = usePaperStore((state) => state.refreshPortfolio);
 
   useEffect(() => {
-    void loadAccount();
-  }, [loadAccount]);
-
+    void refreshPortfolio();
+  }, [marketCode, refreshPortfolio]);
   useEffect(() => {
     if (!marketCode) return;
     const controller = new AbortController();
@@ -83,6 +85,7 @@ export function CoinDetailPage() {
     ? (activeResult?.error ?? null)
     : createContractError();
   const chart = activeResult?.chart ?? null;
+  const holding = holdings.find((item) => item.marketCode === marketCode);
 
   return (
     <main className="app-shell">
@@ -140,11 +143,15 @@ export function CoinDetailPage() {
               </div>
               <div>
                 <dt>사용 가능 현금</dt>
-                <dd>{account ? `${account.cashBalanceKrw}원` : "조회 중"}</dd>
+                <dd>
+                  {(cashBalanceKrw ?? account?.cashBalanceKrw)
+                    ? `${cashBalanceKrw ?? account?.cashBalanceKrw}원`
+                    : "조회 중"}
+                </dd>
               </div>
               <div>
                 <dt>보유 수량</dt>
-                <dd>0</dd>
+                <dd>{holding?.quantity ?? "0"}</dd>
               </div>
             </dl>
 
@@ -165,10 +172,13 @@ export function CoinDetailPage() {
               />
               <SellForm
                 marketCode={chart.marketCode}
-                disabled={true}
+                disabled={chart.marketStatus === "UNAVAILABLE" || !holding}
                 onSuccess={() => setRefreshNonce((value) => value + 1)}
               />
             </div>
+            {portfolioError && (
+              <p role="alert">보유 자산을 갱신하지 못했습니다.</p>
+            )}
             {tradeError && <p role="alert">{tradeError.message}</p>}
           </div>
         )}
