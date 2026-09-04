@@ -1,6 +1,18 @@
 import { describe, expect, it } from "vitest";
+import indexHtml from "../../index.html?raw";
 import appCss from "../App.css?raw";
 import indexCss from "../index.css?raw";
+
+/** Pull the `--token: value;` pairs out of the first rule with this selector. */
+function tokensOf(selector: string): Record<string, string> {
+  const start = indexCss.indexOf(selector);
+  expect(start, `${selector} 규칙이 없다`).toBeGreaterThan(-1);
+  const body = indexCss.slice(start + selector.length, indexCss.indexOf("}", start));
+  const tokens: Record<string, string> = {};
+  for (const [, name, value] of body.matchAll(/(--[\w-]+):\s*([^;]+);/g))
+    tokens[name] = value.trim();
+  return tokens;
+}
 
 describe("디자인 토큰 (UI/design.md)", () => {
   it("라이트 토큰이 design.md 값과 정확히 일치한다", () => {
@@ -61,5 +73,42 @@ describe("레이아웃 규칙", () => {
   it("Tailwind 지시자를 사용하지 않는다", () => {
     expect(indexCss).not.toContain("@tailwind");
     expect(appCss).not.toContain("@tailwind");
+  });
+});
+
+describe("수동 테마 오버라이드", () => {
+  it("OS 다크 블록이 수동 라이트 선택에 밀리도록 :not 가드를 건다", () => {
+    const media = indexCss.slice(
+      indexCss.indexOf("@media (prefers-color-scheme: dark)"),
+    );
+    expect(media).toContain(':root:not([data-theme="light"])');
+  });
+
+  it("수동 다크 블록의 토큰이 OS 다크 블록과 완전히 동일하다", () => {
+    const system = tokensOf(':root:not([data-theme="light"])');
+    const manual = tokensOf(':root[data-theme="dark"]');
+    expect(Object.keys(system).length).toBeGreaterThanOrEqual(11);
+    expect(manual).toEqual(system);
+  });
+
+  it("네이티브 컨트롤용 color-scheme을 수동 모드에도 선언한다", () => {
+    expect(indexCss).toContain("color-scheme: light dark;");
+    expect(indexCss).toContain(':root[data-theme="dark"] { color-scheme: dark; }');
+    expect(indexCss).toContain(':root[data-theme="light"] { color-scheme: light; }');
+  });
+
+  it("index.html이 첫 페인트 전에 저장된 테마를 스탬프한다", () => {
+    const head = indexHtml.slice(0, indexHtml.indexOf("</head>"));
+    expect(head).toContain('<meta name="color-scheme" content="light dark" />');
+    expect(head).toContain("watchup.theme");
+    expect(head).toContain("try {");
+    expect(head).toContain("catch");
+    expect(head).toContain("setAttribute('data-theme', storedTheme)");
+    // 스탬프는 light / dark 에서만. system은 미디어 쿼리에 맡긴다.
+    expect(head).toMatch(/storedTheme === 'light' \|\| storedTheme === 'dark'/);
+    // 인라인 스크립트는 앱 번들보다 먼저 실행되어야 한다.
+    expect(indexHtml.indexOf("watchup.theme")).toBeLessThan(
+      indexHtml.indexOf("/src/main.tsx"),
+    );
   });
 });

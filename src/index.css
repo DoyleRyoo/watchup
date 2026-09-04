@@ -56,9 +56,16 @@
    Layout/typography identical; only colors swap.
    NOTE: design.md's black block lists "main font color: #333333", which is
    unreadable on #171719 and contradicts every *_black*.jsx (main #F5F5F5,
-   sub #848484). The mockups are followed here. */
+   sub #848484). The mockups are followed here.
+
+   Two dark blocks, identical values, on purpose — CSS has no way to reuse one
+   token set under two conditions:
+     1. OS dark, unless the user manually picked light  → :not([data-theme="light"])
+     2. user manually picked dark, whatever the OS says → [data-theme="dark"]
+   The `:not` guard is what lets a manual light choice win over an OS dark
+   setting. src/test/uiTokens.test.ts locks the two blocks to the same values. */
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme="light"]) {
     --bg: #171719;
     --hover: #222224;
     --text-main: #F5F5F5;
@@ -72,6 +79,25 @@
     --shadow: 0 18px 45px rgb(0 0 0 / 45%);
   }
 }
+
+:root[data-theme="dark"] {
+  --bg: #171719;
+  --hover: #222224;
+  --text-main: #F5F5F5;
+  --text-sub: #848484;
+  --danger: #E11616;
+  --primary: #1667E1;
+  --surface: #222224;
+  --border: #222224;
+  --primary-hover: #2B7BF5;
+  --danger-hover: #F03030;
+  --shadow: 0 18px 45px rgb(0 0 0 / 45%);
+}
+
+/* Native controls (form widgets, scrollbars) follow the manual choice too.
+   No attribute = system mode = the `light dark` default declared on :root. */
+:root[data-theme="dark"] { color-scheme: dark; }
+:root[data-theme="light"] { color-scheme: light; }
 
 * { box-sizing: border-box; }
 body { margin: 0; min-width: 320px; min-height: 100svh; background: var(--bg); color: var(--text-main); }

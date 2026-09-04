@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { ThemeToggle } from "../components/ThemeToggle";
 import { AccountSummary } from "../features/paper/AccountSummary";
 import { AccountTopUp } from "../features/paper/AccountTopUp";
 import { TradeHistory } from "../features/paper/TradeHistory";
@@ -81,6 +82,7 @@ export function HomePage() {
           <h1>WatchUp</h1>
         </div>
         <div className="header-actions">
+          <ThemeToggle />
           <button
             type="button"
             className="icon-button"

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { ApiError, createContractError } from "../api/errors";
+import { ThemeToggle } from "../components/ThemeToggle";
 import { BuyForm } from "../features/paper/BuyForm";
 import {
   formatDecimalString,
@@ -114,6 +115,9 @@ export function CoinDetailPage() {
             />
           </svg>
         </Link>
+        <div className="header-actions">
+          <ThemeToggle />
+        </div>
       </header>
 
       <section

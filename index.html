@@ -10,7 +10,20 @@
     <link rel="manifest" href="/icons/manifest.json" />
     
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light dark" />
     <title>watch_up_react</title>
+    <script>
+      /* Pre-paint theme stamp — no FOUC on reload.
+         Key + whitelist mirror src/stores/themeStore.ts; keep them in sync.
+         Nothing is stamped for "system" so prefers-color-scheme decides. */
+      try {
+        var storedTheme = localStorage.getItem('watchup.theme')
+        if (storedTheme === 'light' || storedTheme === 'dark')
+          document.documentElement.setAttribute('data-theme', storedTheme)
+      } catch (error) {
+        /* storage blocked — fall back to prefers-color-scheme */
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>
