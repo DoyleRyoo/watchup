@@ -1,0 +1,51 @@
+{
+  "result": "pass",
+  "checks": [
+    {
+      "theme": "light",
+      "screen": "PC",
+      "logoX": 28,
+      "logoY": 28,
+      "wordX": 64,
+      "wordY": 33
+    },
+    {
+      "theme": "light",
+      "screen": "mobile search",
+      "mobileLogo": {
+        "x": 24,
+        "y": 12
+      },
+      "mainY": 0,
+      "searchY": 16,
+      "titleY": 56,
+      "rowY": 78,
+      "height": 812,
+      "scrollHeight": 812,
+      "scrollWidth": 375
+    },
+    {
+      "theme": "dark",
+      "screen": "PC",
+      "logoX": 28,
+      "logoY": 28,
+      "wordX": 64,
+      "wordY": 33
+    },
+    {
+      "theme": "dark",
+      "screen": "mobile search",
+      "mobileLogo": {
+        "x": 24,
+        "y": 12
+      },
+      "mainY": 0,
+      "searchY": 16,
+      "titleY": 56,
+      "rowY": 78,
+      "height": 812,
+      "scrollHeight": 812,
+      "scrollWidth": 375
+    }
+  ]
+}

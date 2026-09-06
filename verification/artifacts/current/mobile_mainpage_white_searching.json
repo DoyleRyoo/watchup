@@ -30,12 +30,12 @@
     ],
     "main": {
       "x": 24,
-      "y": 16,
+      "y": 0,
       "width": 327,
       "height": 812,
-      "top": 16,
+      "top": 0,
       "right": 351,
-      "bottom": 828,
+      "bottom": 812,
       "left": 24
     }
   },

@@ -200,7 +200,7 @@
         "side": "BUY",
         "amountKrw": "100000"
       },
-      "key": "8fae4fb9-07f9-4a5d-a71c-a4379f244dc9"
+      "key": "0ce87b27-cb88-47da-8838-baec4db97c16"
     },
     {
       "path": "/api/paper/trades",
@@ -210,7 +210,7 @@
         "side": "BUY",
         "amountKrw": "100000"
       },
-      "key": "b80c0aa8-038e-4918-932c-6a7a3c9cc6ee"
+      "key": "e574d272-cc00-40bd-a848-df8119c990e7"
     },
     {
       "path": "/api/paper/portfolio",
@@ -270,7 +270,7 @@
         "side": "SELL",
         "quantity": "1.234"
       },
-      "key": "1d86ed55-861c-4b5a-a7ad-08cd39e6f31f"
+      "key": "fdce0e62-7ce6-4116-9703-9b5bf3f00c59"
     },
     {
       "path": "/api/paper/portfolio",
@@ -320,7 +320,7 @@
         "side": "BUY",
         "quantity": "0.001"
       },
-      "key": "14d7c2da-16d5-4446-8c50-62d38c9eb840"
+      "key": "ba0f59c3-6598-49f5-9187-be5d89c968ec"
     },
     {
       "path": "/api/paper/portfolio",
@@ -373,7 +373,7 @@
       "body": {
         "amountKrw": "1000"
       },
-      "key": "acadc9a9-6ab1-4146-87b9-974b0e595a5b"
+      "key": "6d41254f-3d58-4214-b1d3-4ee6dc194ffb"
     },
     {
       "path": "/api/paper/account",

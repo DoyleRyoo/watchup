@@ -13,10 +13,10 @@ computing gzip size...
 dist/index.html                                  1.42 kB │ gzip:   0.68 kB
 dist/assets/Pretendard-Regular-BhrLQoBv.woff2  765.89 kB
 dist/assets/Pretendard-Bold-BYNivUXw.woff2     791.15 kB
-dist/assets/index-BV1EWqTH.css                  19.97 kB │ gzip:   4.44 kB
-dist/assets/index-uKbIOHoT.js                  826.14 kB │ gzip: 240.41 kB
+dist/assets/index-DMqQXKvN.css                  20.09 kB │ gzip:   4.48 kB
+dist/assets/index-BULDEzPx.js                  826.14 kB │ gzip: 240.41 kB
 
-✓ built in 1.89s
+✓ built in 2.08s
 [plugin builtin:vite-reporter] 
 (!) Some chunks are larger than 500 kB after minification. Consider:
 - Using dynamic import() to code-split the application

@@ -12,6 +12,6 @@ warn - https://tailwindcss.com/docs/content-configuration
 
  Test Files  20 passed (20)
       Tests  149 passed (149)
-   Start at  11:40:17
-   Duration  9.78s (transform 34.04s, setup 14.25s, import 37.85s, tests 13.27s, environment 38.55s)
+   Start at  12:52:43
+   Duration  13.47s (transform 39.18s, setup 21.79s, import 42.57s, tests 17.61s, environment 60.02s)
 
