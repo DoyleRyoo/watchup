@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { ApiError, createContractError } from "../api/errors";
-import { ThemeToggle } from "../components/ThemeToggle";
+import { DashboardLayout } from "../components/DashboardLayout";
 import { BuyForm } from "../features/paper/BuyForm";
 import {
   formatDecimalString,
@@ -46,16 +46,12 @@ function priceStatusLabel(status: CoinChart["priceStatus"]): string {
   return "최신 가격";
 }
 
-function displaySymbol(marketCode: string): string {
-  return marketCode.startsWith("KRW-") && marketCode.length > 4
-    ? marketCode.slice(4)
-    : marketCode;
-}
-
 export function CoinDetailPage() {
   const { marketCode } = useParams<{ marketCode: string }>();
   const [result, setResult] = useState<DetailResult | null>(null);
   const [refreshNonce, setRefreshNonce] = useState(0);
+  const [tradeView, setTradeView] = useState<{ marketCode: string; side: 'BUY' | 'SELL' } | null>(null);
+  const side = tradeView && tradeView.marketCode === marketCode ? tradeView.side : null;
   const cashBalanceKrw = usePaperStore((state) => state.cashBalanceKrw);
   const account = usePaperStore((state) => state.account);
   const holdings = usePaperStore((state) => state.holdings);
@@ -63,9 +59,6 @@ export function CoinDetailPage() {
   const tradeError = usePaperStore((state) => state.tradeError);
   const refreshPortfolio = usePaperStore((state) => state.refreshPortfolio);
 
-  useEffect(() => {
-    void refreshPortfolio();
-  }, [marketCode, refreshPortfolio]);
   useEffect(() => {
     if (!marketCode) return;
     const controller = new AbortController();
@@ -100,124 +93,62 @@ export function CoinDetailPage() {
   const chart = activeResult?.chart ?? null;
   const holding = holdings.find((item) => item.marketCode === marketCode);
 
+  const openTrade = (side: 'BUY' | 'SELL') => {
+    if (!chart || chart.marketStatus === 'UNAVAILABLE') return;
+    setTradeView({ marketCode: chart.marketCode, side });
+  };
+  const tradeSuccess = () => {
+    setTradeView(null);
+    setRefreshNonce((value) => value + 1);
+  };
   return (
-    <main className="app-shell">
-      <header className="app-header detail-header">
-        <Link className="icon-button back-link" to="/" aria-label="검색으로 돌아가기">
-          <svg width="23" height="18" viewBox="0 0 23 18" aria-hidden="true" focusable="false">
-            <path
-              d="M9 1 1 9l8 8M1 9h21"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </Link>
-        <div className="header-actions">
-          <ThemeToggle />
-        </div>
-      </header>
-
-      <section
-        className="dashboard-panel detail-area"
-        aria-labelledby="detail-title"
-      >
-        <h2 id="detail-title">코인 상세</h2>
+    <DashboardLayout marketCode={marketCode} trading={side !== null} onBack={side ? () => setTradeView(null) : undefined}>
+      <section className="dashboard-panel detail-area" aria-labelledby="detail-title">
+        <h2 id="detail-title" className="sr-only">코인 상세</h2>
         {loading && <p role="status" className="status-message">코인 정보를 불러오는 중입니다.</p>}
-        {error && (
-          <div role="alert" className="status-message error-message">
-            {DETAIL_ERROR_LINES.map((line) => (
-              <p key={line}>{line}</p>
-            ))}
-          </div>
-        )}
-
-        {!loading && !error && chart && (
-          <div className="coin-detail">
+        {error && <div role="alert" className="status-message error-message">
+          {DETAIL_ERROR_LINES.map((line) => <p key={line}>{line}</p>)}
+          <button type="button" className="text-button" onClick={() => setRefreshNonce((value) => value + 1)}>다시 시도</button>
+        </div>}
+        {!loading && !error && chart && <div className="coin-detail">
+          <div className="coin-visual">
             <div className="coin-headline">
-              <h3 className="coin-row-title">
-                <span className="coin-name">{chart.koreanName}</span>
-                <span className="coin-symbol">
-                  {displaySymbol(chart.marketCode)}
-                </span>
-              </h3>
-              <p className="coin-price">
-                {chart.currentPrice === null
-                  ? "조회 불가"
-                  : formatKrw(chart.currentPrice)}
-              </p>
-              {holding && (
-                <p
-                  className={`coin-pnl ${signClass(holding.unrealizedPnlKrw)}`}
-                >
-                  {formatSignedKrw(holding.unrealizedPnlKrw, "평가 불가")}
-                </p>
-              )}
-              <span
-                className={`status-badge ${chart.marketStatus === "CAUTION" ? "caution-badge" : ""}`}
-              >
-                {marketStatusLabel(chart.marketStatus)}
-              </span>
+              <h3 className="coin-row-title"><span className="coin-name">{chart.koreanName}</span><span className="coin-symbol">{chart.marketCode}</span></h3>
+              <p className="coin-price">{chart.currentPrice === null ? '조회 불가' : formatKrw(chart.currentPrice)}</p>
+              {holding && <p className={`coin-pnl ${signClass(holding.unrealizedPnlKrw)}`}>{formatSignedKrw(holding.unrealizedPnlKrw, '평가 불가')}</p>}
+              {chart.marketStatus !== 'ACTIVE' && <span className={`status-badge ${chart.marketStatus === 'CAUTION' ? 'caution-badge' : ''}`}>{marketStatusLabel(chart.marketStatus)}</span>}
+              {chart.priceStatus !== 'FRESH' && <span className="status-badge">{priceStatusLabel(chart.priceStatus)}</span>}
             </div>
-
-            <dl className="detail-metrics">
-              <div>
-                <dt>영문명</dt>
-                <dd>{chart.englishName}</dd>
-              </div>
-              <div>
-                <dt>마켓 코드</dt>
-                <dd>{chart.marketCode}</dd>
-              </div>
-              <div>
-                <dt>가격 상태</dt>
-                <dd>
-                  {priceStatusLabel(chart.priceStatus)} ({chart.priceStatus})
-                </dd>
-              </div>
-              <div>
-                <dt>사용 가능 현금</dt>
-                <dd>{formatKrw(cashBalanceKrw ?? account?.cashBalanceKrw ?? null, "조회 중")}</dd>
-              </div>
-              <div>
-                <dt>보유 수량</dt>
-                <dd>{formatDecimalString(holding?.quantity ?? "0")}</dd>
-              </div>
-            </dl>
-
-            <div className="chart-area" aria-labelledby="chart-title">
-              <h3 id="chart-title">최근 30일 가격</h3>
-              {chart.candles.length === 0 ? (
-                <p className="chart-empty">차트를 이용할 수 없습니다.</p>
-              ) : (
-                <PriceChart chart={chart} />
-              )}
+            <div className="chart-area" aria-label="최근 30일 가격">
+              {chart.candles.length === 0 ? <p className="chart-empty">차트를 이용할 수 없습니다.</p> : <PriceChart chart={chart} />}
             </div>
-
-            <div className="trade-panel" aria-label="거래 입력">
-              <BuyForm
-                marketCode={chart.marketCode}
-                disabled={chart.marketStatus === "UNAVAILABLE"}
-                onSuccess={() => setRefreshNonce((value) => value + 1)}
-              />
-              {holding && (
-                <SellForm
-                  marketCode={chart.marketCode}
-                  disabled={chart.marketStatus === "UNAVAILABLE"}
-                  availableQuantity={holding.quantity}
-                  onSuccess={() => setRefreshNonce((value) => value + 1)}
-                />
-              )}
-            </div>
-            {portfolioError && (
-              <p role="alert">보유 자산을 갱신하지 못했습니다.</p>
-            )}
-            {tradeError && <p role="alert">{tradeError.message}</p>}
           </div>
-        )}
+          <div className={`trade-panel${side === 'SELL' ? ' selling' : ''}`} aria-label="거래 입력">
+            <div className="trade-launch">
+              {holding && <button type="button" className="trade-submit sell" disabled={chart.marketStatus === 'UNAVAILABLE'} onClick={() => openTrade('SELL')}>판매하기</button>}
+              <button type="button" className="trade-submit buy" disabled={chart.marketStatus === 'UNAVAILABLE'} onClick={() => openTrade('BUY')}>구매하기</button>
+            </div>
+            <div className="trade-entry">
+              {side === 'SELL' && holding
+                ? <SellForm key={chart.marketCode} marketCode={chart.marketCode} disabled={chart.marketStatus === 'UNAVAILABLE'} availableQuantity={holding.quantity} onSuccess={tradeSuccess} />
+                : <BuyForm key={chart.marketCode} marketCode={chart.marketCode} disabled={chart.marketStatus === 'UNAVAILABLE'} onSuccess={tradeSuccess} />}
+              {holding && <button type="button" className={`trade-submit desktop-trade-switch ${side === 'SELL' ? 'buy' : 'sell'}`} disabled={chart.marketStatus === 'UNAVAILABLE'} onClick={() => openTrade(side === 'SELL' ? 'BUY' : 'SELL')}>{side === 'SELL' ? '구매하기' : '판매하기'}</button>}
+              {tradeError && <p role="alert">{tradeError.message}</p>}
+            </div>
+          </div>
+          {portfolioError && <div role="alert" className="detail-refresh-error"><p>보유 자산을 갱신하지 못했습니다.</p><button type="button" className="text-button" onClick={() => void refreshPortfolio()}>다시 시도</button></div>}
+          <details className="detail-info">
+            <summary>코인 정보</summary>
+            <dl className="detail-metrics">
+              <div><dt>영문명</dt><dd>{chart.englishName}</dd></div>
+              <div><dt>마켓 상태</dt><dd>{marketStatusLabel(chart.marketStatus)}</dd></div>
+              <div><dt>가격 상태</dt><dd>{priceStatusLabel(chart.priceStatus)} ({chart.priceStatus})</dd></div>
+              <div><dt>사용 가능 현금</dt><dd>{formatKrw(cashBalanceKrw ?? account?.cashBalanceKrw ?? null, '조회 중')}</dd></div>
+              <div><dt>보유 수량</dt><dd>{formatDecimalString(holding?.quantity ?? '0')}</dd></div>
+            </dl>
+          </details>
+        </div>}
       </section>
-    </main>
+    </DashboardLayout>
   );
 }

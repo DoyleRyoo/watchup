@@ -1,0 +1,24 @@
+{
+  "name": "mobile_mainpage_white",
+  "source": "watch_up_infra/UI/mobile_mainpage_white.png",
+  "api": "mocked, no real API or real account used",
+  "metrics": {
+    "viewport": {
+      "width": 375,
+      "height": 812
+    },
+    "dpr": 2,
+    "scrollWidth": 375,
+    "fonts": [],
+    "images": []
+  },
+  "errors": [],
+  "requests": [
+    {
+      "method": "GET",
+      "path": "/src/api/errors.ts",
+      "query": "",
+      "body": null
+    }
+  ]
+}

@@ -10,3 +10,7 @@ afterEach(() => {
   try { localStorage.removeItem(THEME_STORAGE_KEY) } catch { /* storage blocked */ }
   useThemeStore.getState().reset()
 })
+
+// jsdom lacks the native dialog methods used by header utilities.
+HTMLDialogElement.prototype.showModal = function () { this.setAttribute('open', '') }
+HTMLDialogElement.prototype.close = function () { this.removeAttribute('open') }

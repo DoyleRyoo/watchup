@@ -1,0 +1,410 @@
+{
+  "environment": "isolated Vite + Chromium; network responses mocked, no live account or DB writes",
+  "checks": [
+    {
+      "name": "빈 검색 결과 + Enter 무동작",
+      "result": "pass",
+      "evidence": ""
+    },
+    {
+      "name": "검색 → 기본 선택 → 방향키 → Enter → 응답 marketCode 상세",
+      "result": "pass",
+      "evidence": ""
+    },
+    {
+      "name": "상세에서 재검색 → 같은 종목·다른 종목 선택 시 검색 닫힘 + 차트 표시",
+      "result": "pass",
+      "evidence": ""
+    },
+    {
+      "name": "구매 실패 시 오류 + 보유 상태 무변경 + 입력 유지",
+      "result": "pass",
+      "evidence": ""
+    },
+    {
+      "name": "금액 구매 → 성공 후 portfolio 재조회 → 판매 가능 상태",
+      "result": "pass",
+      "evidence": {
+        "marketCode": "KRW-BTC",
+        "side": "BUY",
+        "amountKrw": "100000"
+      }
+    },
+    {
+      "name": "새로고침 → 서버 응답으로 보유 상태 재구성",
+      "result": "pass",
+      "evidence": "모의 API 상태 유지 검증; 실제 DB 영속성은 미검증"
+    },
+    {
+      "name": "구매 입력에서 검색 → 보유 중인 동일 종목 클릭 → 차트 복귀",
+      "result": "pass",
+      "evidence": ""
+    },
+    {
+      "name": "전량 판매 후 refetch 실패 → 마지막 보유 상태 유지 + 오류",
+      "result": "pass",
+      "evidence": ""
+    },
+    {
+      "name": "재조회 재시도 성공 → 전량 판매 종목이 목록에서 제거",
+      "result": "pass",
+      "evidence": ""
+    },
+    {
+      "name": "수량 구매 → BUY quantity 문자열만 전달 → 재조회",
+      "result": "pass",
+      "evidence": ""
+    },
+    {
+      "name": "UNAVAILABLE 마켓 BUY·SELL 차단, FRESH 가격과 독립",
+      "result": "pass",
+      "evidence": ""
+    },
+    {
+      "name": "차트 조회 오류 → 재시도 복구",
+      "result": "pass",
+      "evidence": ""
+    },
+    {
+      "name": "헤더 충전 → 계좌·portfolio 갱신, 내역 열기·닫기",
+      "result": "pass",
+      "evidence": ""
+    },
+    {
+      "name": "테마 전환 + 새로고침 지속",
+      "result": "pass",
+      "evidence": ""
+    },
+    {
+      "name": "반응형 320px 가로 스크롤 없음",
+      "result": "pass",
+      "evidence": ""
+    },
+    {
+      "name": "반응형 375px 가로 스크롤 없음",
+      "result": "pass",
+      "evidence": ""
+    },
+    {
+      "name": "반응형 600px 가로 스크롤 없음",
+      "result": "pass",
+      "evidence": ""
+    },
+    {
+      "name": "반응형 768px 가로 스크롤 없음",
+      "result": "pass",
+      "evidence": ""
+    },
+    {
+      "name": "반응형 1024px 가로 스크롤 없음",
+      "result": "pass",
+      "evidence": ""
+    },
+    {
+      "name": "반응형 1275px 가로 스크롤 없음",
+      "result": "pass",
+      "evidence": ""
+    },
+    {
+      "name": "반응형 1440px 가로 스크롤 없음",
+      "result": "pass",
+      "evidence": ""
+    },
+    {
+      "name": "로그아웃 → 보호 경로 종료",
+      "result": "pass",
+      "evidence": "검증용 Supabase 응답; 실제 OAuth 미검증"
+    },
+    {
+      "name": "브라우저 예외 0건·watchlist 요청 0건",
+      "result": "pass",
+      "evidence": ""
+    }
+  ],
+  "requests": [
+    {
+      "path": "/api/paper/account",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/paper/portfolio",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/coins/search",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/coins/search",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/paper/account",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/paper/portfolio",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/coins/KRW-BTC/chart",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/coins/search",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/coins/search",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/paper/portfolio",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/coins/KRW-BCH/chart",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/coins/search",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/paper/portfolio",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/coins/KRW-BTC/chart",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/paper/trades",
+      "method": "POST",
+      "body": {
+        "marketCode": "KRW-BTC",
+        "side": "BUY",
+        "amountKrw": "100000"
+      },
+      "key": "8fae4fb9-07f9-4a5d-a71c-a4379f244dc9"
+    },
+    {
+      "path": "/api/paper/trades",
+      "method": "POST",
+      "body": {
+        "marketCode": "KRW-BTC",
+        "side": "BUY",
+        "amountKrw": "100000"
+      },
+      "key": "b80c0aa8-038e-4918-932c-6a7a3c9cc6ee"
+    },
+    {
+      "path": "/api/paper/portfolio",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/coins/KRW-BTC/chart",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/paper/account",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/paper/portfolio",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/coins/KRW-BTC/chart",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/paper/account",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/paper/portfolio",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/paper/account",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/paper/portfolio",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/coins/KRW-BTC/chart",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/paper/trades",
+      "method": "POST",
+      "body": {
+        "marketCode": "KRW-BTC",
+        "side": "SELL",
+        "quantity": "1.234"
+      },
+      "key": "1d86ed55-861c-4b5a-a7ad-08cd39e6f31f"
+    },
+    {
+      "path": "/api/paper/portfolio",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/coins/KRW-BTC/chart",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/paper/portfolio",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/paper/account",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/paper/portfolio",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/paper/account",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/paper/portfolio",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/coins/KRW-BTC/chart",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/paper/trades",
+      "method": "POST",
+      "body": {
+        "marketCode": "KRW-BTC",
+        "side": "BUY",
+        "quantity": "0.001"
+      },
+      "key": "14d7c2da-16d5-4446-8c50-62d38c9eb840"
+    },
+    {
+      "path": "/api/paper/portfolio",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/coins/KRW-BTC/chart",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/paper/account",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/paper/portfolio",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/coins/KRW-BTC/chart",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/paper/account",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/paper/portfolio",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/coins/KRW-BTC/chart",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/coins/KRW-BTC/chart",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/paper/top-ups",
+      "method": "POST",
+      "body": {
+        "amountKrw": "1000"
+      },
+      "key": "acadc9a9-6ab1-4146-87b9-974b0e595a5b"
+    },
+    {
+      "path": "/api/paper/account",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/paper/portfolio",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/paper/trades",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/paper/account",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/paper/portfolio",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/coins/KRW-BTC/chart",
+      "method": "GET",
+      "body": null
+    }
+  ],
+  "errors": []
+}

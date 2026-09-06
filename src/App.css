@@ -147,13 +147,136 @@ a { color: inherit; }
 .load-older { width: 100%; margin-top: 12px; background: transparent; color: var(--text-sub); font-size: var(--font-size-sm); }
 .load-older:hover:not(:disabled) { background: var(--hover); color: var(--text-main); }
 
-/* --- PC layout (PC_mainpage_*): same tree, regrouped into two columns ------ */
-.dashboard-grid { display: grid; grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); gap: 32px; align-items: start; }
-.dashboard-column { min-width: 0; }
+/* Reference geometry: mobile 375×812, desktop 1275×900; PNG export is 2×. */
+.sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+[hidden] { display: none !important; }
+.app-shell { width: min(100% - 56px, 1219px); min-height: 100svh; padding: 0 0 24px; }
+.app-header { height: 84px; min-height: 84px; gap: 8px; }
+.brand { position: relative; width: 124px; height: 36px; flex: none; text-decoration: none; }
+.brand-mark { position: absolute; top: 0; left: 0; width: 36px; height: 36px; overflow: hidden; }
+.brand-mark img { position: absolute; width: 46px; height: 46px; top: -5px; left: -5px; max-width: none; }
+.brand h1 { position: absolute; left: 34px; top: 5px; line-height: 31px; }
+.header-actions { margin-left: auto; gap: 5px; }
+.header-actions .icon-button { width: 28px; min-width: 28px; height: 32px; min-height: 32px; }
+.header-actions .header-search { width: 29px; margin-left: 6px; }
+.header-actions .icon-button:not(.header-search) { color: var(--text-sub); }
+.app-header .back-link { display: none; }
+.account-dialog { width: min(440px, calc(100% - 48px)); max-height: calc(100svh - 48px); padding: 24px; border: 1px solid var(--border); border-radius: 16px; background: var(--bg); color: var(--text-main); }
+.account-dialog::backdrop { background: rgb(0 0 0 / 35%); }
+.dialog-close { margin-left: auto; }
+.dashboard-search { position: relative; width: min(416px, 100%); margin: 24px auto 28px; z-index: 2; }
+.search-back { display: none; color: #333333; }
+.search-area { padding: 0; }
+.search-field { padding: 0 17px; background: var(--search-fill); height: 35px; }
+.search-field input { min-height: 35px; font-size: 12px; line-height: 14px; }
+.search-field:focus-within { outline: none; }
+.search-field:has(input:focus-visible) { box-shadow: 0 0 0 1px var(--text-sub); }
+.search-result-panel { position: absolute; left: 0; right: 0; top: 47px; background: var(--bg); padding: 12px; border: 1px solid var(--border); border-radius: 12px; box-shadow: var(--shadow); }
+.search-results { margin: 0; }
+.account-summary { position: relative; margin: 0 0 17px calc((100% - 82px) * .287599 + 33px); padding: 12px 0; min-height: 96px; }
+.summary-primary { display: grid; gap: 4px; margin: 0; padding: 0 12px 0 0; max-width: min(273px, 45%); }
+.summary-primary dt { line-height: 19px; }
+.summary-primary dd { line-height: 33px; overflow-wrap: anywhere; }
+.summary-secondary dd { overflow-wrap: anywhere; }
+.summary-pnl { margin: 4px 0 0; line-height: 12px; max-width: min(273px, 45%); padding-right: 12px; overflow-wrap: anywhere; }
+.summary-secondary { position: absolute; left: min(273px, 45%); top: 32px; width: min(327px, 55%); display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0; margin: 0; padding: 0; }
+.summary-secondary > div { gap: 4px; }
+.summary-secondary dt, .summary-secondary dd { font-size: 12px; line-height: 14px; }
+.dashboard-grid { display: grid; grid-template-columns: minmax(0, 327fr) minmax(0, 483fr) minmax(0, 327fr); column-gap: 41px; align-items: start; }
+.holdings-area { padding: 12px 0; }
+.holdings-area h2 { margin: 0 0 10px; font-size: 10px; line-height: 12px; }
+.coin-row { min-height: 43px; padding: 6px 0; gap: 4px; border-radius: 0; }
+.coin-row:hover:not(:disabled), .coin-row.selected { background: var(--row-highlight); }
+.coin-row-main, .coin-row-side { gap: 0; }
+.coin-row-main { flex: 1; }
+.coin-row-side { flex: 1; }
+.coin-row-title { margin: 0; gap: 4px; flex-wrap: wrap; }
+.coin-name, .coin-row-value { line-height: 19px; }
+.coin-symbol, .coin-row-sub, .coin-row-change { line-height: 12px; overflow-wrap: anywhere; }
+.coin-row-value, .coin-row-change { overflow-wrap: anywhere; max-width: 100%; }
+
+/* Detail shares the desktop dashboard; the mobile trade view keeps its URL. */
+.detail-area, .coin-detail { display: contents; }
+.coin-visual { grid-column: 2; }
+.coin-headline { padding: 12px 0; gap: 0; min-height: 88px; align-content: start; }
+.coin-headline .coin-pnl { line-height: 12px; }
+.chart-area { padding: 0; background: var(--chart-fill); }
+.price-chart-canvas { height: 444px; }
+.chart-note { margin: 0; padding: 4px; }
+.chart-empty { min-height: 327px; border-radius: 0; }
+.trade-panel { grid-column: 3; position: relative; display: block; height: 532px; padding: 0; }
+.trade-launch { display: none; }
+.trade-entry, .trade-form { height: 100%; position: relative; }
+.trade-form { display: flex; flex-direction: column; gap: 0; }
+.trade-input-group { padding-top: 92px; display: grid; gap: 12px; }
+.trade-mode { display: flex; align-items: center; gap: 3px; height: 12px; }
+.trade-mode button { min-height: 12px; padding: 0; border-radius: 0; background: transparent; color: var(--text-sub); font-size: 10px; line-height: 12px; }
+.trade-mode button:hover:not(:disabled) { background: transparent; color: var(--text-main); }
+.trade-mode button[aria-pressed='true'] { color: var(--text-main); }
+.trade-mode span { color: var(--text-sub); font-size: 10px; }
+.trade-form label { gap: 0; }
+.trade-form input { padding: 0; height: 31px; min-height: 31px; border-radius: 0; background: transparent; font-size: 26px; line-height: 31px; letter-spacing: 0; }
+.trade-form input::placeholder { color: var(--text-sub); opacity: 1; }
+.trade-hint { line-height: 12px; }
+.trade-submit { min-height: 55px; height: 55px; padding: 0 8px; border-radius: 16px; font-size: 18px; line-height: 33px; flex: none; }
+.trade-form > .trade-submit { margin-top: auto; }
+.trade-submit.buy:disabled { background: #E18181; opacity: 1; }
+.trade-entry:has(.desktop-trade-switch) .trade-form > .trade-submit { width: calc(50% - 3.5px); align-self: flex-end; }
+.desktop-trade-switch { position: absolute; left: 0; bottom: 0; width: calc(50% - 3.5px); }
+.trade-entry > [role='alert'] { position: absolute; bottom: 64px; left: 0; right: 0; }
+.detail-info { grid-column: 2 / 4; margin-top: 24px; font-size: 10px; color: var(--text-sub); }
+.detail-info summary { cursor: pointer; }
+.detail-refresh-error { grid-column: 2 / 4; margin-top: 12px; }
+.sell-all { justify-self: start; padding: 0; min-height: 18px; }
 
 @media (max-width: 767px) {
-  .app-shell { width: min(100% - 48px, 1275px); }
+  .app-shell { width: calc(100% - 48px); }
+  .app-header { height: 60px; min-height: 60px; }
+  .header-actions { gap: 2px; }
+  .header-actions .icon-button { width: 24px; min-width: 24px; }
+  .header-actions .header-search { margin-left: 2px; }
+  .dashboard-search { display: none; }
+  .account-summary { margin: 0; padding: 12px 0; min-height: 0; }
+  .summary-primary, .summary-pnl { max-width: none; padding-right: 0; }
+  .summary-secondary { position: static; width: auto; grid-template-columns: 1fr 1fr; padding-top: 24px; padding-bottom: 0; }
+  .dashboard-grid { display: block; }
   .auth-card { padding: 32px 24px; }
-  .dashboard-grid { grid-template-columns: 1fr; gap: 0; }
-  .price-chart-canvas { height: 280px; }
+  .search-active .app-header, .search-active .account-summary { display: none; }
+  .search-active .dashboard-search { display: flex; gap: 7px; width: calc(100% - 1px); margin: 16px 0 0; min-height: 28px; align-items: flex-start; }
+  .search-active .search-back { display: grid; flex: none; width: 26px; min-width: 26px; height: 28px; min-height: 28px; border-radius: 0; }
+  .search-active .search-area { flex: 1; min-width: 0; }
+  .search-active .search-field { height: 28px; background: var(--mobile-search-fill); padding: 0 17px; border-radius: 11px; }
+  .search-active .search-field input { min-height: 28px; }
+  .search-active .search-result-panel { position: relative; top: auto; width: calc(100% + 33px); margin-left: -33px; padding: 12px 0; border: 0; box-shadow: none; }
+  .search-active .search-result-panel .section-label { margin-bottom: 10px; line-height: 12px; }
+  .search-active .has-search-query .holdings-area { display: none; }
+  .search-active .detail-area { display: none; }
+  .detail-header .brand { display: none; }
+  .detail-header .back-link { display: grid; width: 27px; min-width: 27px; height: 36px; min-height: 36px; }
+  .detail-shell .account-summary, .detail-shell .holdings-area { display: none; }
+  .detail-shell.search-active .holdings-area { display: block; }
+  .detail-shell.search-active .has-search-query .holdings-area { display: none; }
+  .detail-shell .detail-area, .detail-shell .coin-detail { display: block; padding: 0; }
+  .detail-shell.search-active .detail-area { display: none; }
+  .coin-headline { min-height: 88px; padding: 12px 0; }
+  .coin-price { overflow-wrap: anywhere; }
+  .chart-area { aspect-ratio: 1; }
+  .price-chart-canvas { height: auto; aspect-ratio: 1; }
+  .trade-panel { height: auto; position: static; padding: 0; }
+  .trade-launch { display: flex; position: fixed; left: 24px; right: 24px; bottom: max(24px, env(safe-area-inset-bottom)); gap: 7px; }
+  .trade-launch .trade-submit { flex: 1; min-width: 0; }
+  .trade-entry { display: none; }
+  .detail-info { margin-top: 24px; padding-bottom: 95px; }
+  .trading-active .chart-area, .trading-active .coin-pnl, .trading-active .trade-launch, .trading-active .detail-info { display: none; }
+  .trading-active .coin-headline { padding-top: 40px; min-height: 0; padding-bottom: 0; }
+  .trading-active .trade-entry { display: block; }
+  .trading-active .trade-input-group { padding-top: 41px; }
+  .trading-active .trade-entry .trade-form > .trade-submit { position: fixed; width: calc(100% - 48px); left: 24px; right: 24px; bottom: max(24px, env(safe-area-inset-bottom)); }
+  .trading-active .desktop-trade-switch { display: none; }
+  .trading-active .trade-entry > [role='alert'] { position: static; margin-top: 24px; }
+  .trading-active .trade-panel { padding-bottom: 110px; }
+  .app-shell:not(.detail-shell):not(.search-active) .change-up { color: var(--home-up); }
+  .app-shell:not(.detail-shell):not(.search-active) .change-down { color: var(--home-down); }
+  .trade-launch .trade-submit.sell { background: var(--mobile-sell-fill); }
+  .trading-active .back-link, .trading-active .trade-mode button[aria-pressed='true'] { color: #333333; }
 }

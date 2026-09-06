@@ -47,7 +47,8 @@ export type BuyTradeBody = {
   marketCode: string;
   side: "BUY";
   amountKrw: string;
-};
+  quantity?: never;
+} | { marketCode: string; side: "BUY"; quantity: string; amountKrw?: never };
 export type SellTradeBody = {
   marketCode: string;
   side: "SELL";

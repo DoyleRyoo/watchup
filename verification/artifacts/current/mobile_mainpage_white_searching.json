@@ -1,0 +1,57 @@
+{
+  "name": "mobile_mainpage_white_searching",
+  "source": "watch_up_infra/UI/mobile_mainpage_white_searching.png",
+  "api": "mocked, no real API or real account used",
+  "metrics": {
+    "viewport": {
+      "width": 375,
+      "height": 812
+    },
+    "dpr": 2,
+    "scrollWidth": 375,
+    "theme": "light",
+    "fonts": [
+      {
+        "family": "Pretendard",
+        "weight": "400",
+        "status": "loaded"
+      },
+      {
+        "family": "Pretendard",
+        "weight": "700",
+        "status": "loaded"
+      }
+    ],
+    "images": [
+      {
+        "src": "/icons/android-icon-192x192.png",
+        "loaded": true
+      }
+    ],
+    "main": {
+      "x": 24,
+      "y": 16,
+      "width": 327,
+      "height": 812,
+      "top": 16,
+      "right": 351,
+      "bottom": 828,
+      "left": 24
+    }
+  },
+  "errors": [],
+  "requests": [
+    {
+      "method": "GET",
+      "path": "/api/paper/account",
+      "query": "",
+      "body": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/paper/portfolio",
+      "query": "",
+      "body": null
+    }
+  ]
+}

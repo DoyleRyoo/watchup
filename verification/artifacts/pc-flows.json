@@ -1,0 +1,318 @@
+{
+  "environment": "mocked API, no real account or DB changes",
+  "checks": [
+    {
+      "theme": "light",
+      "name": "PC 검색 → 결과 클릭 → 상세 3열 표시",
+      "result": "pass"
+    },
+    {
+      "theme": "light",
+      "name": "PC 금액 구매 실패 → 재시도 성공 → 보유 행 반영",
+      "result": "pass"
+    },
+    {
+      "theme": "light",
+      "name": "PC 새로고침 → 모의 API 보유 재구성",
+      "result": "pass"
+    },
+    {
+      "theme": "light",
+      "name": "PC 판매 입력 전환 → 전량 판매 → 보유 행 제거",
+      "result": "pass"
+    },
+    {
+      "theme": "light",
+      "name": "PC 수량 구매 → quantity-only 요청 → 보유 재조회",
+      "result": "pass"
+    },
+    {
+      "theme": "dark",
+      "name": "PC 검색 → 결과 클릭 → 상세 3열 표시",
+      "result": "pass"
+    },
+    {
+      "theme": "dark",
+      "name": "PC 금액 구매 실패 → 재시도 성공 → 보유 행 반영",
+      "result": "pass"
+    },
+    {
+      "theme": "dark",
+      "name": "PC 새로고침 → 모의 API 보유 재구성",
+      "result": "pass"
+    },
+    {
+      "theme": "dark",
+      "name": "PC 판매 입력 전환 → 전량 판매 → 보유 행 제거",
+      "result": "pass"
+    },
+    {
+      "theme": "dark",
+      "name": "PC 수량 구매 → quantity-only 요청 → 보유 재조회",
+      "result": "pass"
+    }
+  ],
+  "requests": [
+    {
+      "theme": "light",
+      "path": "/api/paper/account",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "theme": "light",
+      "path": "/api/paper/portfolio",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "theme": "light",
+      "path": "/api/coins/search",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "theme": "light",
+      "path": "/api/paper/account",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "theme": "light",
+      "path": "/api/paper/portfolio",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "theme": "light",
+      "path": "/api/coins/KRW-BTC/chart",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "theme": "light",
+      "path": "/api/paper/trades",
+      "method": "POST",
+      "body": {
+        "marketCode": "KRW-BTC",
+        "side": "BUY",
+        "amountKrw": "1000"
+      }
+    },
+    {
+      "theme": "light",
+      "path": "/api/paper/trades",
+      "method": "POST",
+      "body": {
+        "marketCode": "KRW-BTC",
+        "side": "BUY",
+        "amountKrw": "1000"
+      }
+    },
+    {
+      "theme": "light",
+      "path": "/api/paper/portfolio",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "theme": "light",
+      "path": "/api/coins/KRW-BTC/chart",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "theme": "light",
+      "path": "/api/paper/account",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "theme": "light",
+      "path": "/api/paper/portfolio",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "theme": "light",
+      "path": "/api/coins/KRW-BTC/chart",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "theme": "light",
+      "path": "/api/paper/trades",
+      "method": "POST",
+      "body": {
+        "marketCode": "KRW-BTC",
+        "side": "SELL",
+        "quantity": "1.234"
+      }
+    },
+    {
+      "theme": "light",
+      "path": "/api/paper/portfolio",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "theme": "light",
+      "path": "/api/coins/KRW-BTC/chart",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "theme": "light",
+      "path": "/api/paper/trades",
+      "method": "POST",
+      "body": {
+        "marketCode": "KRW-BTC",
+        "side": "BUY",
+        "quantity": "0.001"
+      }
+    },
+    {
+      "theme": "light",
+      "path": "/api/paper/portfolio",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "theme": "light",
+      "path": "/api/coins/KRW-BTC/chart",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "theme": "dark",
+      "path": "/api/paper/account",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "theme": "dark",
+      "path": "/api/paper/portfolio",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "theme": "dark",
+      "path": "/api/coins/search",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "theme": "dark",
+      "path": "/api/paper/account",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "theme": "dark",
+      "path": "/api/paper/portfolio",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "theme": "dark",
+      "path": "/api/coins/KRW-BTC/chart",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "theme": "dark",
+      "path": "/api/paper/trades",
+      "method": "POST",
+      "body": {
+        "marketCode": "KRW-BTC",
+        "side": "BUY",
+        "amountKrw": "1000"
+      }
+    },
+    {
+      "theme": "dark",
+      "path": "/api/paper/trades",
+      "method": "POST",
+      "body": {
+        "marketCode": "KRW-BTC",
+        "side": "BUY",
+        "amountKrw": "1000"
+      }
+    },
+    {
+      "theme": "dark",
+      "path": "/api/paper/portfolio",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "theme": "dark",
+      "path": "/api/coins/KRW-BTC/chart",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "theme": "dark",
+      "path": "/api/paper/account",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "theme": "dark",
+      "path": "/api/paper/portfolio",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "theme": "dark",
+      "path": "/api/coins/KRW-BTC/chart",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "theme": "dark",
+      "path": "/api/paper/trades",
+      "method": "POST",
+      "body": {
+        "marketCode": "KRW-BTC",
+        "side": "SELL",
+        "quantity": "1.234"
+      }
+    },
+    {
+      "theme": "dark",
+      "path": "/api/paper/portfolio",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "theme": "dark",
+      "path": "/api/coins/KRW-BTC/chart",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "theme": "dark",
+      "path": "/api/paper/trades",
+      "method": "POST",
+      "body": {
+        "marketCode": "KRW-BTC",
+        "side": "BUY",
+        "quantity": "0.001"
+      }
+    },
+    {
+      "theme": "dark",
+      "path": "/api/paper/portfolio",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "theme": "dark",
+      "path": "/api/coins/KRW-BTC/chart",
+      "method": "GET",
+      "body": null
+    }
+  ],
+  "errors": []
+}

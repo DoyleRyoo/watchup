@@ -19,6 +19,13 @@
   /* design.md */
   --bg: #F5F5F5;
   --hover: #DDDEE0;
+  --row-highlight: #D4D5DB;
+  --search-fill: #DBDBDB;
+  --mobile-search-fill: #DBDBDB;
+  --home-up: #E11616;
+  --home-down: #1667E1;
+  --mobile-sell-fill: #1667E1;
+  --chart-fill: #D7D7D7;
   --text-main: #333333;
   --text-sub: #848484;
   --danger: #E11616;
@@ -68,6 +75,13 @@
   :root:not([data-theme="light"]) {
     --bg: #171719;
     --hover: #222224;
+    --row-highlight: #222224;
+    --search-fill: #DBDBDB;
+    --mobile-search-fill: #222224;
+    --home-up: #FF0000;
+    --home-down: #008CFF;
+    --mobile-sell-fill: #2B59FF;
+    --chart-fill: #D7D7D7;
     --text-main: #F5F5F5;
     --text-sub: #848484;
     --danger: #E11616;
@@ -83,6 +97,13 @@
 :root[data-theme="dark"] {
   --bg: #171719;
   --hover: #222224;
+    --row-highlight: #222224;
+    --search-fill: #DBDBDB;
+    --mobile-search-fill: #222224;
+    --home-up: #FF0000;
+    --home-down: #008CFF;
+    --mobile-sell-fill: #2B59FF;
+    --chart-fill: #D7D7D7;
   --text-main: #F5F5F5;
   --text-sub: #848484;
   --danger: #E11616;
@@ -102,3 +123,6 @@
 * { box-sizing: border-box; }
 body { margin: 0; min-width: 320px; min-height: 100svh; background: var(--bg); color: var(--text-main); }
 h1, h2, h3, p { overflow-wrap: anywhere; }
+
+:root[data-theme="dark"] .brand-mark img { filter: invert(1) contrast(1.1) brightness(1.155); mix-blend-mode: screen; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .brand-mark img { filter: invert(1) contrast(1.1) brightness(1.155); mix-blend-mode: screen; } }

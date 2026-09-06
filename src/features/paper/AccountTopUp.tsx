@@ -25,6 +25,7 @@ export function AccountTopUp() {
     try {
       await topUp(amountKrw, key);
       setAmountKrw("");
+      await usePaperStore.getState().refreshPortfolio();
     } catch {
       // Store exposes the API error in the rendered alert.
     }
@@ -36,7 +37,7 @@ export function AccountTopUp() {
       aria-labelledby="paper-account-heading"
     >
       <h2 id="paper-account-heading">모의투자 충전</h2>
-      {error && <p role="alert">{error.message}</p>}
+      {error && <div role="alert"><p>{error.message}</p><button type="button" className="text-button" onClick={() => void loadAccount()}>계좌 다시 조회</button></div>}
       <form className="top-up-form" onSubmit={(event) => void submit(event)}>
         <label htmlFor="top-up-amount">충전 금액</label>
         <div className="top-up-controls">

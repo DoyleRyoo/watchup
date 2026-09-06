@@ -102,13 +102,13 @@ describe("차트 페이지 직접 진입", () => {
     renderDetail();
 
     expect(
-      await screen.findByRole("heading", { name: /비트코인\s*BTC/ }),
+      await screen.findByRole("heading", { name: /비트코인\s*KRW-BTC/ }),
     ).toBeInTheDocument();
     expect(featureApi.getCoinChart).toHaveBeenCalledWith(
       "KRW-BTC",
       expect.any(AbortSignal),
     );
-    expect(screen.getByText("KRW-BTC")).toBeInTheDocument();
+    expect(screen.getAllByText("KRW-BTC").length).toBeGreaterThan(0);
     expect(screen.getByText("Bitcoin")).toBeInTheDocument();
     expect(screen.getByText("거래 가능")).toBeInTheDocument();
     expect(screen.getByText("142,300,000.25원")).toBeInTheDocument();
@@ -116,7 +116,7 @@ describe("차트 페이지 직접 진입", () => {
     expect(
       screen.getByRole("img", { name: /KRW-BTC 최근 30일 종가 차트/ }),
     ).toBeInTheDocument();
-    expect(screen.getByText("1,000,000원")).toBeInTheDocument();
+    expect(screen.getAllByText("1,000,000원").length).toBeGreaterThan(0);
     expect(screen.getByText("0")).toBeInTheDocument();
     expect(
       screen.getByRole("textbox", { name: "매수 금액 (원)" }),
@@ -176,14 +176,15 @@ describe("거래 컨트롤 상태", () => {
     paperApi.getPortfolio.mockResolvedValue(portfolioResponse([btcHolding]));
     renderDetail();
 
+    fireEvent.click((await screen.findAllByRole('button', { name: '판매하기' })).at(-1)!);
     expect(
       await screen.findByRole("textbox", { name: "매도 수량" }),
     ).toBeEnabled();
     expect(
-      screen.getByRole("button", { name: "판매하기" }),
+      screen.getAllByRole("button", { name: "판매하기" }).at(-1)!,
     ).toBeInTheDocument();
     expect(screen.getByText("판매 가능 0.5개")).toBeInTheDocument();
-    expect(screen.getByText("+1,150,000원")).toBeInTheDocument();
+    expect(document.querySelector(".coin-pnl")).toHaveTextContent("+1,150,000원");
   });
 
   it("UNAVAILABLE 마켓은 구매·판매 컨트롤을 모두 비활성화한다", async () => {
@@ -197,9 +198,9 @@ describe("거래 컨트롤 상태", () => {
     expect(
       await screen.findByRole("textbox", { name: "매수 금액 (원)" }),
     ).toBeDisabled();
-    expect(screen.getByRole("textbox", { name: "매도 수량" })).toBeDisabled();
-    expect(screen.getByRole("button", { name: "구매하기" })).toBeDisabled();
-    expect(screen.getByRole("button", { name: "판매하기" })).toBeDisabled();
+    expect(screen.queryByRole("textbox", { name: "매도 수량" })).not.toBeInTheDocument();
+    expect(screen.getAllByRole("button", { name: "구매하기" }).every((b) => b.hasAttribute("disabled"))).toBe(true);
+    expect(screen.getAllByRole("button", { name: "판매하기" }).every((b) => b.hasAttribute("disabled"))).toBe(true);
   });
 
   it("구매 성공 시 낙관적 갱신 없이 portfolio를 다시 조회한다 (REFRESH-01)", async () => {
@@ -209,7 +210,7 @@ describe("거래 컨트롤 상태", () => {
       name: "매수 금액 (원)",
     });
     fireEvent.change(amount, { target: { value: "100000" } });
-    fireEvent.click(screen.getByRole("button", { name: "구매하기" }));
+    fireEvent.click(screen.getAllByRole("button", { name: "구매하기" }).at(-1)!);
 
     await waitFor(() =>
       expect(paperApi.postTrade).toHaveBeenCalledWith(
@@ -233,7 +234,7 @@ describe("거래 컨트롤 상태", () => {
       name: "매수 금액 (원)",
     });
     fireEvent.change(amount, { target: { value: "100000" } });
-    fireEvent.click(screen.getByRole("button", { name: "구매하기" }));
+    fireEvent.click(screen.getAllByRole("button", { name: "구매하기" }).at(-1)!);
 
     expect(await screen.findByText("잔액이 부족합니다.")).toBeInTheDocument();
     expect(screen.getByText("0.5")).toBeInTheDocument();

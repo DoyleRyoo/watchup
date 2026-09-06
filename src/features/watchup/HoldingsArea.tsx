@@ -19,7 +19,7 @@ import { usePaperStore } from "../../stores/paperStore";
  *
  * Portfolio totals are rendered once, by `AccountSummary`.
  */
-export function HoldingsArea() {
+export function HoldingsArea({ selectedMarketCode, onSelect }: { selectedMarketCode?: string; onSelect?: () => void }) {
   const navigate = useNavigate();
   const holdings = usePaperStore((state) => state.holdings);
   const status = usePaperStore((state) => state.valuationStatus);
@@ -29,7 +29,7 @@ export function HoldingsArea() {
 
   useEffect(() => {
     void refresh();
-  }, [refresh]);
+  }, [refresh, selectedMarketCode]);
 
   return (
     <section
@@ -37,8 +37,8 @@ export function HoldingsArea() {
       aria-labelledby="holdings-title"
     >
       <div className="section-heading">
-        <h2 id="holdings-title">보유 자산</h2>
-        {status && <span className="section-label">{status}</span>}
+        <h2 id="holdings-title">코인</h2>
+
       </div>
       {loading && holdings.length === 0 && (
         <p role="status" className="status-message">
@@ -53,6 +53,7 @@ export function HoldingsArea() {
           </button>
         </div>
       )}
+      {status === "STALE" && <p role="status" className="status-message">지연된 가격으로 평가한 자산입니다.</p>}
       {status === "PARTIAL" && (
         <p role="status" className="status-message">
           일부 가격을 조회할 수 없습니다.
@@ -69,8 +70,9 @@ export function HoldingsArea() {
             <li key={holding.marketCode}>
               <button
                 type="button"
-                className="coin-row"
-                onClick={() => navigate(`/coins/${holding.marketCode}`)}
+                className={`coin-row${selectedMarketCode === holding.marketCode ? ' selected' : ''}`}
+                aria-current={selectedMarketCode === holding.marketCode ? 'page' : undefined}
+                onClick={() => { navigate(`/coins/${holding.marketCode}`); onSelect?.(); }}
               >
                 <span className="coin-row-main">
                   <span className="coin-row-title">
@@ -81,6 +83,7 @@ export function HoldingsArea() {
                   </span>
                   <span className="coin-row-sub">
                     {formatDecimalString(holding.quantity)}코인
+                    {holding.priceStatus === "STALE" && " · 지연 가격"}
                   </span>
                 </span>
                 <span className="coin-row-side">

@@ -71,6 +71,7 @@ it("보유 수량이 있으면 SELL control을 활성화한다", async () => {
 
   renderDetail();
 
+  fireEvent.click((await screen.findAllByRole('button', { name: '판매하기' })).at(-1)!);
   expect(
     await screen.findByRole("textbox", { name: "매도 수량" }),
   ).toBeEnabled();
@@ -87,12 +88,11 @@ it("거래 후 portfolio refetch 실패 상태를 보존하고 다시 시도한�
 
   renderDetail();
 
-  const alert = await screen.findByRole("alert");
-  expect(alert).toHaveTextContent("보유 자산을 갱신하지 못했습니다.");
+  expect(await screen.findByText("보유 자산을 갱신하지 못했습니다.")).toBeInTheDocument();
   expect(screen.getByText("0.1")).toBeInTheDocument();
   expect(refreshPortfolio).toHaveBeenCalledOnce();
 
-  fireEvent.click(screen.getByRole("button", { name: "다시 시도" }));
+  fireEvent.click(screen.getAllByRole("button", { name: "다시 시도" }).at(-1)!);
 
   expect(refreshPortfolio).toHaveBeenCalledTimes(2);
   expect(screen.getByText("0.1")).toBeInTheDocument();

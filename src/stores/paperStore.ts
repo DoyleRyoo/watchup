@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { useAuthStore } from "./authStore";
 import { ApiError, createContractError } from "../api/errors";
 import {
   getAccount,
@@ -53,17 +54,21 @@ const initialState = {
 };
 const asApiError = (error: unknown) =>
   error instanceof ApiError ? error : createContractError();
+let sessionGeneration = 0;
 let portfolioSequence = 0;
 let portfolioController: AbortController | null = null;
 
 export const usePaperStore = create<PaperState>((set, get) => ({
   ...initialState,
   loadAccount: async () => {
+    const generation = sessionGeneration;
     set({ loading: true, error: null });
     try {
       const response = await getAccount();
+      if (generation !== sessionGeneration) return;
       set({ account: response.data, loading: false });
     } catch (error) {
+      if (generation !== sessionGeneration) return;
       set({ error: asApiError(error), loading: false });
     }
   },
@@ -90,11 +95,13 @@ export const usePaperStore = create<PaperState>((set, get) => ({
     }
   },
   topUp: async (amountKrw, idempotencyKey) => {
+    const generation = sessionGeneration;
     set({ loading: true, error: null });
     try {
       try {
         await requestTopUp(amountKrw, idempotencyKey);
       } catch (error) {
+        if (generation !== sessionGeneration) return;
         if (
           !(error instanceof ApiError) ||
           error.code !== "DATABASE_UNAVAILABLE"
@@ -103,18 +110,22 @@ export const usePaperStore = create<PaperState>((set, get) => ({
         await requestTopUp(amountKrw, idempotencyKey);
       }
       const response = await getAccount();
+      if (generation !== sessionGeneration) return;
       set({ account: response.data, loading: false });
     } catch (error) {
+      if (generation !== sessionGeneration) return;
       set({ error: asApiError(error), loading: false });
       throw error;
     }
   },
   postTrade: async (body, idempotencyKey) => {
+    const generation = sessionGeneration;
     set({ tradeSubmitting: true, tradeError: null });
     try {
       try {
         await requestTrade(body, idempotencyKey);
       } catch (error) {
+        if (generation !== sessionGeneration) return;
         if (
           !(error instanceof ApiError) ||
           error.code !== "DATABASE_UNAVAILABLE"
@@ -122,17 +133,25 @@ export const usePaperStore = create<PaperState>((set, get) => ({
           throw error;
         await requestTrade(body, idempotencyKey);
       }
+      if (generation !== sessionGeneration) return;
       set({ tradeSubmitting: false });
       await get().refreshPortfolio();
     } catch (error) {
+      if (generation !== sessionGeneration) return;
       set({ tradeError: asApiError(error), tradeSubmitting: false });
       throw error;
     }
   },
   reset: () => {
+    sessionGeneration += 1;
     portfolioSequence += 1;
     portfolioController?.abort();
     portfolioController = null;
     set(initialState);
   },
 }));
+
+// Clear account-specific state for logout and identity changes, including 401 logout.
+useAuthStore.subscribe((state, previous) => {
+  if (state.session?.user.id !== previous.session?.user.id) usePaperStore.getState().reset();
+});

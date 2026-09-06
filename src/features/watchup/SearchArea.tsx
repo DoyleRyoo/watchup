@@ -21,7 +21,7 @@ function Message({ lines }: { lines: string[] }) {
   </div>
 }
 
-export function SearchArea() {
+export function SearchArea({ onClose, onSelect }: { onClose?: () => void; onSelect?: () => void }) {
   const navigate = useNavigate()
   const [selection, setSelection] = useState<{
     results: SearchResult[]
@@ -51,9 +51,11 @@ export function SearchArea() {
 
   const navigateToResult = (result: SearchResult) => {
     navigate(`/coins/${result.marketCode}`)
+    onSelect?.()
   }
 
   const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Escape') { onClose?.(); return }
     if (event.key === 'ArrowDown') {
       event.preventDefault()
       if (searchResults.length > 0) {
@@ -79,13 +81,9 @@ export function SearchArea() {
 
   return (
     <section className="search-area" aria-labelledby="search-title">
-      <h2 id="search-title">코인 검색</h2>
+      <h2 id="search-title" className="sr-only">코인 검색</h2>
       <label htmlFor={SEARCH_INPUT_ID}>코인명</label>
       <div className="search-field">
-        <svg width="18" height="18" viewBox="0 0 22 22" aria-hidden="true" focusable="false">
-          <circle cx="9.5" cy="9.5" r="7" fill="none" stroke="currentColor" strokeWidth="2" />
-          <path d="m15 15 5 5" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
-        </svg>
         <input
           id={SEARCH_INPUT_ID}
           name="query"
@@ -102,10 +100,11 @@ export function SearchArea() {
       </div>
 
       {searchLoading && <p role="status" className="status-message">코인을 검색하는 중입니다.</p>}
-      {searchError && <Message lines={SEARCH_ERROR_LINES} />}
+      {searchError && <><Message lines={SEARCH_ERROR_LINES} /><button type="button" className="text-button" onClick={() => void submitSearch()}>다시 시도</button></>}
       {!searchLoading && !searchError && hasSearched && searchResults.length === 0
         && <p className="status-message">검색 결과가 없습니다.</p>}
       {searchResults.length > 0 && (
+        <div className="search-result-panel"><p className="section-label">코인</p>
         <ul id="coin-search-results" className="search-results" role="listbox">
           {searchResults.map((result, index) => (
             <li
@@ -126,7 +125,7 @@ export function SearchArea() {
               </span>
             </li>
           ))}
-        </ul>
+        </ul></div>
       )}
     </section>
   )

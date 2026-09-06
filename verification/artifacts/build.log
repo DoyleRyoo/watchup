@@ -1,0 +1,24 @@
+
+> watch_up_react@0.0.0 build
+> tsc -b && vite build
+
+vite v8.1.4 building client environment for production...
+[2Ktransforming...
+warn - The `content` option in your Tailwind CSS configuration is missing or empty.
+warn - Configure your content sources or your generated CSS will be missing styles.
+warn - https://tailwindcss.com/docs/content-configuration
+✓ 2418 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                                  1.42 kB │ gzip:   0.68 kB
+dist/assets/Pretendard-Regular-BhrLQoBv.woff2  765.89 kB
+dist/assets/Pretendard-Bold-BYNivUXw.woff2     791.15 kB
+dist/assets/index-BV1EWqTH.css                  19.97 kB │ gzip:   4.44 kB
+dist/assets/index-uKbIOHoT.js                  826.14 kB │ gzip: 240.41 kB
+
+✓ built in 1.89s
+[plugin builtin:vite-reporter] 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.

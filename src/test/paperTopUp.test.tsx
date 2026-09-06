@@ -3,7 +3,7 @@ import { beforeEach, expect, it, vi } from "vitest";
 import { AccountTopUp } from "../features/paper/AccountTopUp";
 import { usePaperStore } from "../stores/paperStore";
 
-const api = vi.hoisted(() => ({ getAccount: vi.fn(), topUp: vi.fn() }));
+const api = vi.hoisted(() => ({ getAccount: vi.fn(), topUp: vi.fn(), getPortfolio: vi.fn() }));
 vi.mock("../features/paper/api", () => api);
 
 beforeEach(() => {
@@ -19,6 +19,7 @@ beforeEach(() => {
       },
       meta: null,
     });
+  api.getPortfolio.mockResolvedValue({ data: { cashBalanceKrw: "1001000", holdings: [], valuationStatus: "FRESH" } });
   api.topUp.mockReset().mockResolvedValue({ data: { id: "2" }, meta: null });
   vi.spyOn(crypto, "randomUUID").mockReturnValue(
     "11111111-1111-4111-8111-111111111111",

@@ -40,7 +40,7 @@ export function SellForm({
   };
   return (
     <form className="trade-form sell-form" onSubmit={(event) => void submit(event)}>
-      <label>
+      <div className="trade-input-group"><label>
         매도 수량
         <input
           aria-label="매도 수량"
@@ -56,6 +56,7 @@ export function SellForm({
       <p className="trade-hint">
         판매 가능 {formatDecimalString(availableQuantity)}개
       </p>
+      </div>
       <button
         type="submit"
         className="trade-submit sell"

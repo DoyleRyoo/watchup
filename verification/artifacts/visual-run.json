@@ -1,0 +1,677 @@
+[
+  {
+    "name": "mobile_mainpage_black",
+    "result": "captured and compared",
+    "capture": {
+      "capture": "/workspace/watch_up_react/verification/artifacts/current/mobile_mainpage_black.png",
+      "errors": [],
+      "metrics": {
+        "viewport": {
+          "width": 375,
+          "height": 812
+        },
+        "dpr": 2,
+        "scrollWidth": 375,
+        "theme": "dark",
+        "fonts": [
+          {
+            "family": "Pretendard",
+            "weight": "400",
+            "status": "loaded"
+          },
+          {
+            "family": "Pretendard",
+            "weight": "700",
+            "status": "loaded"
+          }
+        ],
+        "images": [
+          {
+            "src": "/icons/android-icon-192x192.png",
+            "loaded": true
+          }
+        ],
+        "main": {
+          "x": 24,
+          "y": 0,
+          "width": 327,
+          "height": 812,
+          "top": 0,
+          "right": 351,
+          "bottom": 812,
+          "left": 24
+        }
+      }
+    }
+  },
+  {
+    "name": "PC_mainpage_white",
+    "result": "captured and compared",
+    "capture": {
+      "capture": "/workspace/watch_up_react/verification/artifacts/current/PC_mainpage_white.png",
+      "errors": [],
+      "metrics": {
+        "viewport": {
+          "width": 1275,
+          "height": 900
+        },
+        "dpr": 2,
+        "scrollWidth": 1275,
+        "theme": "light",
+        "fonts": [
+          {
+            "family": "Pretendard",
+            "weight": "400",
+            "status": "loaded"
+          },
+          {
+            "family": "Pretendard",
+            "weight": "700",
+            "status": "loaded"
+          }
+        ],
+        "images": [
+          {
+            "src": "/icons/android-icon-192x192.png",
+            "loaded": true
+          }
+        ],
+        "main": {
+          "x": 28,
+          "y": 0,
+          "width": 1219,
+          "height": 900,
+          "top": 0,
+          "right": 1247,
+          "bottom": 900,
+          "left": 28
+        }
+      }
+    }
+  },
+  {
+    "name": "PC_mainpage_black",
+    "result": "captured and compared",
+    "capture": {
+      "capture": "/workspace/watch_up_react/verification/artifacts/current/PC_mainpage_black.png",
+      "errors": [],
+      "metrics": {
+        "viewport": {
+          "width": 1275,
+          "height": 900
+        },
+        "dpr": 2,
+        "scrollWidth": 1275,
+        "theme": "dark",
+        "fonts": [
+          {
+            "family": "Pretendard",
+            "weight": "400",
+            "status": "loaded"
+          },
+          {
+            "family": "Pretendard",
+            "weight": "700",
+            "status": "loaded"
+          }
+        ],
+        "images": [
+          {
+            "src": "/icons/android-icon-192x192.png",
+            "loaded": true
+          }
+        ],
+        "main": {
+          "x": 28,
+          "y": 0,
+          "width": 1219,
+          "height": 900,
+          "top": 0,
+          "right": 1247,
+          "bottom": 900,
+          "left": 28
+        }
+      }
+    }
+  },
+  {
+    "name": "mobile_mainpage_black_chart_have",
+    "result": "captured and compared",
+    "capture": {
+      "capture": "/workspace/watch_up_react/verification/artifacts/current/mobile_mainpage_black_chart_have.png",
+      "errors": [],
+      "metrics": {
+        "viewport": {
+          "width": 375,
+          "height": 812
+        },
+        "dpr": 2,
+        "scrollWidth": 375,
+        "theme": "dark",
+        "fonts": [
+          {
+            "family": "Pretendard",
+            "weight": "400",
+            "status": "loaded"
+          },
+          {
+            "family": "Pretendard",
+            "weight": "700",
+            "status": "loaded"
+          }
+        ],
+        "images": [
+          {
+            "src": "/icons/android-icon-192x192.png",
+            "loaded": true
+          }
+        ],
+        "main": {
+          "x": 24,
+          "y": 0,
+          "width": 327,
+          "height": 812,
+          "top": 0,
+          "right": 351,
+          "bottom": 812,
+          "left": 24
+        }
+      }
+    }
+  },
+  {
+    "name": "mobile_mainpage_black_chart_not_have",
+    "result": "captured and compared",
+    "capture": {
+      "capture": "/workspace/watch_up_react/verification/artifacts/current/mobile_mainpage_black_chart_not_have.png",
+      "errors": [],
+      "metrics": {
+        "viewport": {
+          "width": 375,
+          "height": 812
+        },
+        "dpr": 2,
+        "scrollWidth": 375,
+        "theme": "dark",
+        "fonts": [
+          {
+            "family": "Pretendard",
+            "weight": "400",
+            "status": "loaded"
+          },
+          {
+            "family": "Pretendard",
+            "weight": "700",
+            "status": "loaded"
+          }
+        ],
+        "images": [
+          {
+            "src": "/icons/android-icon-192x192.png",
+            "loaded": true
+          }
+        ],
+        "main": {
+          "x": 24,
+          "y": 0,
+          "width": 327,
+          "height": 812,
+          "top": 0,
+          "right": 351,
+          "bottom": 812,
+          "left": 24
+        }
+      }
+    }
+  },
+  {
+    "name": "mobile_mainpage_black_purchasing_price_before",
+    "result": "captured and compared",
+    "capture": {
+      "capture": "/workspace/watch_up_react/verification/artifacts/current/mobile_mainpage_black_purchasing_price_before.png",
+      "errors": [],
+      "metrics": {
+        "viewport": {
+          "width": 375,
+          "height": 812
+        },
+        "dpr": 2,
+        "scrollWidth": 375,
+        "theme": "dark",
+        "fonts": [
+          {
+            "family": "Pretendard",
+            "weight": "400",
+            "status": "loaded"
+          },
+          {
+            "family": "Pretendard",
+            "weight": "700",
+            "status": "loaded"
+          }
+        ],
+        "images": [
+          {
+            "src": "/icons/android-icon-192x192.png",
+            "loaded": true
+          }
+        ],
+        "main": {
+          "x": 24,
+          "y": 0,
+          "width": 327,
+          "height": 812,
+          "top": 0,
+          "right": 351,
+          "bottom": 812,
+          "left": 24
+        }
+      }
+    }
+  },
+  {
+    "name": "mobile_mainpage_white_chart_have",
+    "result": "captured and compared",
+    "capture": {
+      "capture": "/workspace/watch_up_react/verification/artifacts/current/mobile_mainpage_white_chart_have.png",
+      "errors": [],
+      "metrics": {
+        "viewport": {
+          "width": 375,
+          "height": 812
+        },
+        "dpr": 2,
+        "scrollWidth": 375,
+        "theme": "light",
+        "fonts": [
+          {
+            "family": "Pretendard",
+            "weight": "400",
+            "status": "loaded"
+          },
+          {
+            "family": "Pretendard",
+            "weight": "700",
+            "status": "loaded"
+          }
+        ],
+        "images": [
+          {
+            "src": "/icons/android-icon-192x192.png",
+            "loaded": true
+          }
+        ],
+        "main": {
+          "x": 24,
+          "y": 0,
+          "width": 327,
+          "height": 812,
+          "top": 0,
+          "right": 351,
+          "bottom": 812,
+          "left": 24
+        }
+      }
+    }
+  },
+  {
+    "name": "mobile_mainpage_white",
+    "result": "captured and compared",
+    "capture": {
+      "capture": "/workspace/watch_up_react/verification/artifacts/current/mobile_mainpage_white.png",
+      "errors": [],
+      "metrics": {
+        "viewport": {
+          "width": 375,
+          "height": 812
+        },
+        "dpr": 2,
+        "scrollWidth": 375,
+        "theme": "light",
+        "fonts": [
+          {
+            "family": "Pretendard",
+            "weight": "400",
+            "status": "loaded"
+          },
+          {
+            "family": "Pretendard",
+            "weight": "700",
+            "status": "loaded"
+          }
+        ],
+        "images": [
+          {
+            "src": "/icons/android-icon-192x192.png",
+            "loaded": true
+          }
+        ],
+        "main": {
+          "x": 24,
+          "y": 0,
+          "width": 327,
+          "height": 812,
+          "top": 0,
+          "right": 351,
+          "bottom": 812,
+          "left": 24
+        }
+      }
+    }
+  },
+  {
+    "name": "mobile_mainpage_black_searching",
+    "result": "captured and compared",
+    "capture": {
+      "capture": "/workspace/watch_up_react/verification/artifacts/current/mobile_mainpage_black_searching.png",
+      "errors": [],
+      "metrics": {
+        "viewport": {
+          "width": 375,
+          "height": 812
+        },
+        "dpr": 2,
+        "scrollWidth": 375,
+        "theme": "dark",
+        "fonts": [
+          {
+            "family": "Pretendard",
+            "weight": "400",
+            "status": "loaded"
+          },
+          {
+            "family": "Pretendard",
+            "weight": "700",
+            "status": "loaded"
+          }
+        ],
+        "images": [
+          {
+            "src": "/icons/android-icon-192x192.png",
+            "loaded": true
+          }
+        ],
+        "main": {
+          "x": 24,
+          "y": 16,
+          "width": 327,
+          "height": 812,
+          "top": 16,
+          "right": 351,
+          "bottom": 828,
+          "left": 24
+        }
+      }
+    }
+  },
+  {
+    "name": "mobile_mainpage_white_chart_not_have",
+    "result": "captured and compared",
+    "capture": {
+      "capture": "/workspace/watch_up_react/verification/artifacts/current/mobile_mainpage_white_chart_not_have.png",
+      "errors": [],
+      "metrics": {
+        "viewport": {
+          "width": 375,
+          "height": 812
+        },
+        "dpr": 2,
+        "scrollWidth": 375,
+        "theme": "light",
+        "fonts": [
+          {
+            "family": "Pretendard",
+            "weight": "400",
+            "status": "loaded"
+          },
+          {
+            "family": "Pretendard",
+            "weight": "700",
+            "status": "loaded"
+          }
+        ],
+        "images": [
+          {
+            "src": "/icons/android-icon-192x192.png",
+            "loaded": true
+          }
+        ],
+        "main": {
+          "x": 24,
+          "y": 0,
+          "width": 327,
+          "height": 812,
+          "top": 0,
+          "right": 351,
+          "bottom": 812,
+          "left": 24
+        }
+      }
+    }
+  },
+  {
+    "name": "mobile_mainpage_white_purchasing_number_after",
+    "result": "captured and compared",
+    "capture": {
+      "capture": "/workspace/watch_up_react/verification/artifacts/current/mobile_mainpage_white_purchasing_number_after.png",
+      "errors": [],
+      "metrics": {
+        "viewport": {
+          "width": 375,
+          "height": 812
+        },
+        "dpr": 2,
+        "scrollWidth": 375,
+        "theme": "light",
+        "fonts": [
+          {
+            "family": "Pretendard",
+            "weight": "400",
+            "status": "loaded"
+          },
+          {
+            "family": "Pretendard",
+            "weight": "700",
+            "status": "loaded"
+          }
+        ],
+        "images": [
+          {
+            "src": "/icons/android-icon-192x192.png",
+            "loaded": true
+          }
+        ],
+        "main": {
+          "x": 24,
+          "y": 0,
+          "width": 327,
+          "height": 812,
+          "top": 0,
+          "right": 351,
+          "bottom": 812,
+          "left": 24
+        }
+      }
+    }
+  },
+  {
+    "name": "mobile_mainpage_white_purchasing_number_before",
+    "result": "captured and compared",
+    "capture": {
+      "capture": "/workspace/watch_up_react/verification/artifacts/current/mobile_mainpage_white_purchasing_number_before.png",
+      "errors": [],
+      "metrics": {
+        "viewport": {
+          "width": 375,
+          "height": 812
+        },
+        "dpr": 2,
+        "scrollWidth": 375,
+        "theme": "light",
+        "fonts": [
+          {
+            "family": "Pretendard",
+            "weight": "400",
+            "status": "loaded"
+          },
+          {
+            "family": "Pretendard",
+            "weight": "700",
+            "status": "loaded"
+          }
+        ],
+        "images": [
+          {
+            "src": "/icons/android-icon-192x192.png",
+            "loaded": true
+          }
+        ],
+        "main": {
+          "x": 24,
+          "y": 0,
+          "width": 327,
+          "height": 812,
+          "top": 0,
+          "right": 351,
+          "bottom": 812,
+          "left": 24
+        }
+      }
+    }
+  },
+  {
+    "name": "mobile_mainpage_white_searching",
+    "result": "captured and compared",
+    "capture": {
+      "capture": "/workspace/watch_up_react/verification/artifacts/current/mobile_mainpage_white_searching.png",
+      "errors": [],
+      "metrics": {
+        "viewport": {
+          "width": 375,
+          "height": 812
+        },
+        "dpr": 2,
+        "scrollWidth": 375,
+        "theme": "light",
+        "fonts": [
+          {
+            "family": "Pretendard",
+            "weight": "400",
+            "status": "loaded"
+          },
+          {
+            "family": "Pretendard",
+            "weight": "700",
+            "status": "loaded"
+          }
+        ],
+        "images": [
+          {
+            "src": "/icons/android-icon-192x192.png",
+            "loaded": true
+          }
+        ],
+        "main": {
+          "x": 24,
+          "y": 16,
+          "width": 327,
+          "height": 812,
+          "top": 16,
+          "right": 351,
+          "bottom": 828,
+          "left": 24
+        }
+      }
+    }
+  },
+  {
+    "name": "mobile_mainpage_white_purchasing_price_before",
+    "result": "captured and compared",
+    "capture": {
+      "capture": "/workspace/watch_up_react/verification/artifacts/current/mobile_mainpage_white_purchasing_price_before.png",
+      "errors": [],
+      "metrics": {
+        "viewport": {
+          "width": 375,
+          "height": 812
+        },
+        "dpr": 2,
+        "scrollWidth": 375,
+        "theme": "light",
+        "fonts": [
+          {
+            "family": "Pretendard",
+            "weight": "400",
+            "status": "loaded"
+          },
+          {
+            "family": "Pretendard",
+            "weight": "700",
+            "status": "loaded"
+          }
+        ],
+        "images": [
+          {
+            "src": "/icons/android-icon-192x192.png",
+            "loaded": true
+          }
+        ],
+        "main": {
+          "x": 24,
+          "y": 0,
+          "width": 327,
+          "height": 812,
+          "top": 0,
+          "right": 351,
+          "bottom": 812,
+          "left": 24
+        }
+      }
+    }
+  },
+  {
+    "name": "mobile_mainpage_white_purchasing_price_after",
+    "result": "captured and compared",
+    "capture": {
+      "capture": "/workspace/watch_up_react/verification/artifacts/current/mobile_mainpage_white_purchasing_price_after.png",
+      "errors": [],
+      "metrics": {
+        "viewport": {
+          "width": 375,
+          "height": 812
+        },
+        "dpr": 2,
+        "scrollWidth": 375,
+        "theme": "light",
+        "fonts": [
+          {
+            "family": "Pretendard",
+            "weight": "400",
+            "status": "loaded"
+          },
+          {
+            "family": "Pretendard",
+            "weight": "700",
+            "status": "loaded"
+          }
+        ],
+        "images": [
+          {
+            "src": "/icons/android-icon-192x192.png",
+            "loaded": true
+          }
+        ],
+        "main": {
+          "x": 24,
+          "y": 0,
+          "width": 327,
+          "height": 812,
+          "top": 0,
+          "right": 351,
+          "bottom": 812,
+          "left": 24
+        }
+      }
+    }
+  }
+]

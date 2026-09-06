@@ -113,7 +113,7 @@ describe("메인 화면 디자인 + 계약 연결", () => {
 
     fireEvent.click(screen.getByRole("button", { name: "코인 검색으로 이동" }));
 
-    expect(screen.getByRole("searchbox", { name: "코인명" })).toHaveFocus();
+    await waitFor(() => expect(screen.getByRole("searchbox", { name: "코인명" })).toHaveFocus());
     expect(screen.queryByText(/도착:/)).not.toBeInTheDocument();
     await waitFor(() => expect(paperApi.getPortfolio).toHaveBeenCalled());
   });
@@ -187,6 +187,7 @@ describe("메인 화면 디자인 + 계약 연결", () => {
   it("거래 내역을 beforeId 커서 계약대로 함께 마운트한다", async () => {
     renderHome();
 
+    fireEvent.click(screen.getByRole('button', { name: '거래 내역 열기' }));
     await waitFor(() =>
       expect(paperApi.getTrades).toHaveBeenCalledWith(
         { limit: 20 },
