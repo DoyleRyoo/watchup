@@ -17,15 +17,15 @@
 /* Light tokens — watch_up_infra/UI/design.md (white version). */
 :root {
   /* design.md */
-  --bg: #F5F5F5;
+  --bg: #FDFDFD;
   --hover: #DDDEE0;
   --row-highlight: #D4D5DB;
-  --search-fill: #DBDBDB;
+  --search-fill: #FDFDFD;
   --mobile-search-fill: #DBDBDB;
   --home-up: #E11616;
   --home-down: #1667E1;
   --mobile-sell-fill: #1667E1;
-  --chart-fill: #D7D7D7;
+  --chart-fill: #FDFDFD;
   --text-main: #333333;
   --text-sub: #848484;
   --danger: #E11616;
@@ -76,12 +76,12 @@
     --bg: #171719;
     --hover: #222224;
     --row-highlight: #222224;
-    --search-fill: #DBDBDB;
+    --search-fill: #171719;
     --mobile-search-fill: #222224;
     --home-up: #FF0000;
     --home-down: #008CFF;
     --mobile-sell-fill: #2B59FF;
-    --chart-fill: #D7D7D7;
+    --chart-fill: #171719;
     --text-main: #F5F5F5;
     --text-sub: #848484;
     --danger: #E11616;
