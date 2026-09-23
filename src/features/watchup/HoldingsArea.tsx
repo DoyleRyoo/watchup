@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  formatDecimalString,
+  formatQuantity,
   formatKrw,
   formatSignedKrw,
   signClass,
@@ -82,7 +82,7 @@ export function HoldingsArea({ selectedMarketCode, onSelect }: { selectedMarketC
                     <span className="coin-symbol">{holding.marketCode}</span>
                   </span>
                   <span className="coin-row-sub">
-                    {formatDecimalString(holding.quantity)}코인
+                    {formatQuantity(holding.quantity)}코인
                     {holding.priceStatus === "STALE" && " · 지연 가격"}
                   </span>
                 </span>

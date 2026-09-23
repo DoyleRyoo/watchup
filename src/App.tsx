@@ -1,3 +1,4 @@
+import { ToastHost } from './components/ToastHost'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import './App.css'
 import { AuthProvider } from './auth/AuthProvider'
@@ -18,5 +19,5 @@ export function AppRoutes() {
 }
 
 export default function App() {
-  return <BrowserRouter><AuthProvider fallback={<AuthLoading />}><AppRoutes /></AuthProvider></BrowserRouter>
+  return <BrowserRouter><AuthProvider fallback={<AuthLoading />}><ToastHost /><AppRoutes /></AuthProvider></BrowserRouter>
 }

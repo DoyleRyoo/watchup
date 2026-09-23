@@ -136,7 +136,7 @@ describe("메인 화면 디자인 + 계약 연결", () => {
     expect(row).toHaveClass("coin-row");
     expect(row).toHaveTextContent("비트코인");
     expect(row).toHaveTextContent("KRW-BTC");
-    expect(row).toHaveTextContent("1.234코인");
+    expect(row).toHaveTextContent("1코인");
     expect(row).toHaveTextContent("1,110,600원");
     const change = row.querySelector(".coin-row-change");
     expect(change).toHaveTextContent("-99,999원");

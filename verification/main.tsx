@@ -1,3 +1,4 @@
+import { ToastHost } from '../src/components/ToastHost'
 // This entry is served only by verification/server.mjs. Production main.tsx is unchanged.
 import type { Session } from '@supabase/supabase-js'
 import { createRoot } from 'react-dom/client'
@@ -27,4 +28,4 @@ auth.signOut = async () => {
 }
 useAuthStore.getState().completeInitialization(location.pathname === '/login' ? null : session)
 useThemeStore.getState().reset()
-createRoot(document.getElementById('root')!).render(<BrowserRouter><AppRoutes /></BrowserRouter>)
+createRoot(document.getElementById('root')!).render(<BrowserRouter><ToastHost /><AppRoutes /></BrowserRouter>)

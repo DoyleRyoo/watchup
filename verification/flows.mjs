@@ -75,7 +75,7 @@ try {
   await page.getByRole('textbox',{name:'매수 금액 (원)'}).fill('100000')
   failTrade=true
   await page.getByRole('button',{name:'구매하기',exact:true}).click()
-  await page.getByRole('alert').filter({hasText:'현재가 조회에 실패'}).waitFor()
+  await page.getByRole('alert').filter({hasText:'시세를 불러올 수 없어 주문하지 못했습니다.'}).waitFor()
   assert.equal(owned,false)
   record('구매 실패 시 오류 + 보유 상태 무변경 + 입력 유지')
   failTrade=false
@@ -134,10 +134,10 @@ try {
   await page.getByLabel('충전 금액').fill('1000')
   await page.getByRole('button',{name:'충전',exact:true}).click()
   await page.waitForResponse(r=>r.url().endsWith('/paper/portfolio'))
-  await page.getByRole('button',{name:'닫기',exact:true}).click()
+  await page.getByRole('dialog').getByRole('button',{name:'닫기',exact:true}).click()
   await page.getByRole('button',{name:'거래 내역 열기'}).click()
   await page.getByText('거래 내역이 없습니다.').waitFor()
-  await page.getByRole('button',{name:'닫기',exact:true}).click()
+  await page.getByRole('dialog').getByRole('button',{name:'닫기',exact:true}).click()
   record('헤더 충전 → 계좌·portfolio 갱신, 내역 열기·닫기')
   await page.getByRole('button',{name:/테마:/}).click()
   const theme=await page.locator('html').getAttribute('data-theme')

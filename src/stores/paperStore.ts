@@ -36,6 +36,7 @@ type PaperState = {
   refreshPortfolio: () => Promise<void>;
   topUp: (amountKrw: string, idempotencyKey: string) => Promise<void>;
   postTrade: (body: TradeBody, idempotencyKey: string) => Promise<void>;
+  clearTradeError: () => void;
   reset: () => void;
 };
 
@@ -142,6 +143,7 @@ export const usePaperStore = create<PaperState>((set, get) => ({
       throw error;
     }
   },
+  clearTradeError: () => set({ tradeError: null }),
   reset: () => {
     sessionGeneration += 1;
     portfolioSequence += 1;

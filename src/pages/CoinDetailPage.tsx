@@ -1,10 +1,12 @@
+import { useToastStore } from "../stores/toastStore";
+import { messageFor } from "../features/paper/errorMessages";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { ApiError, createContractError } from "../api/errors";
 import { DashboardLayout } from "../components/DashboardLayout";
 import { BuyForm } from "../features/paper/BuyForm";
 import {
-  formatDecimalString,
+  formatQuantity,
   formatKrw,
   formatSignedKrw,
   signClass,
@@ -57,7 +59,13 @@ export function CoinDetailPage() {
   const holdings = usePaperStore((state) => state.holdings);
   const portfolioError = usePaperStore((state) => state.portfolioError);
   const tradeError = usePaperStore((state) => state.tradeError);
+  const clearTradeError = usePaperStore((state) => state.clearTradeError);
   const refreshPortfolio = usePaperStore((state) => state.refreshPortfolio);
+
+  useEffect(() => {
+    clearTradeError();
+    return clearTradeError;
+  }, [clearTradeError, marketCode]);
 
   useEffect(() => {
     if (!marketCode) return;
@@ -95,14 +103,20 @@ export function CoinDetailPage() {
 
   const openTrade = (side: 'BUY' | 'SELL') => {
     if (!chart || chart.marketStatus === 'UNAVAILABLE') return;
+    clearTradeError();
     setTradeView({ marketCode: chart.marketCode, side });
   };
-  const tradeSuccess = () => {
+  const closeTrade = () => {
+    clearTradeError();
     setTradeView(null);
+  };
+  const tradeSuccess = () => {
+    useToastStore.getState().show("success", side === "SELL" ? "판매 완료" : "구매 완료");
+    closeTrade();
     setRefreshNonce((value) => value + 1);
   };
   return (
-    <DashboardLayout marketCode={marketCode} trading={side !== null} onBack={side ? () => setTradeView(null) : undefined}>
+    <DashboardLayout marketCode={marketCode} trading={side !== null} onBack={side ? closeTrade : undefined}>
       <section className="dashboard-panel detail-area" aria-labelledby="detail-title">
         <h2 id="detail-title" className="sr-only">코인 상세</h2>
         {loading && <p role="status" className="status-message">코인 정보를 불러오는 중입니다.</p>}
@@ -123,18 +137,18 @@ export function CoinDetailPage() {
               {chart.candles.length === 0 ? <p className="chart-empty">차트를 이용할 수 없습니다.</p> : <PriceChart chart={chart} />}
             </div>
           </div>
-          <div className={`trade-panel${side === 'SELL' ? ' selling' : ''}`} aria-label="거래 입력">
+          <div className="trade-panel" data-side={side ?? 'BUY'} aria-label="거래 입력">
             <div className="trade-launch">
               {holding && <button type="button" className="trade-submit sell" disabled={chart.marketStatus === 'UNAVAILABLE'} onClick={() => openTrade('SELL')}>판매하기</button>}
               <button type="button" className="trade-submit buy" disabled={chart.marketStatus === 'UNAVAILABLE'} onClick={() => openTrade('BUY')}>구매하기</button>
             </div>
             <div className="trade-entry">
               {side === 'SELL' && holding
-                ? <SellForm key={chart.marketCode} marketCode={chart.marketCode} disabled={chart.marketStatus === 'UNAVAILABLE'} availableQuantity={holding.quantity} onSuccess={tradeSuccess} />
-                : <BuyForm key={chart.marketCode} marketCode={chart.marketCode} disabled={chart.marketStatus === 'UNAVAILABLE'} onSuccess={tradeSuccess} />}
-              {holding && <button type="button" className={`trade-submit desktop-trade-switch ${side === 'SELL' ? 'buy' : 'sell'}`} disabled={chart.marketStatus === 'UNAVAILABLE'} onClick={() => openTrade(side === 'SELL' ? 'BUY' : 'SELL')}>{side === 'SELL' ? '구매하기' : '판매하기'}</button>}
-              {tradeError && <p role="alert">{tradeError.message}</p>}
+                ? <SellForm key={chart.marketCode} marketCode={chart.marketCode} disabled={chart.marketStatus === 'UNAVAILABLE'} availableQuantity={holding.quantity} currentPrice={chart.currentPrice} priceStatus={chart.priceStatus} onSuccess={tradeSuccess} />
+                : <BuyForm key={chart.marketCode} marketCode={chart.marketCode} disabled={chart.marketStatus === 'UNAVAILABLE'} currentPrice={chart.currentPrice} priceStatus={chart.priceStatus} onSuccess={tradeSuccess} />}
+              {holding && <button type="button" className={`trade-switch desktop-trade-switch ${side === 'SELL' ? 'buy' : 'sell'}`} disabled={chart.marketStatus === 'UNAVAILABLE'} onClick={() => openTrade(side === 'SELL' ? 'BUY' : 'SELL')}>{side === 'SELL' ? '구매하기' : '판매하기'}</button>}
             </div>
+            {tradeError && <p className="trade-error">{messageFor(tradeError)}</p>}
           </div>
           {portfolioError && <div role="alert" className="detail-refresh-error"><p>보유 자산을 갱신하지 못했습니다.</p><button type="button" className="text-button" onClick={() => void refreshPortfolio()}>다시 시도</button></div>}
           <details className="detail-info">
@@ -144,7 +158,7 @@ export function CoinDetailPage() {
               <div><dt>마켓 상태</dt><dd>{marketStatusLabel(chart.marketStatus)}</dd></div>
               <div><dt>가격 상태</dt><dd>{priceStatusLabel(chart.priceStatus)} ({chart.priceStatus})</dd></div>
               <div><dt>사용 가능 현금</dt><dd>{formatKrw(cashBalanceKrw ?? account?.cashBalanceKrw ?? null, '조회 중')}</dd></div>
-              <div><dt>보유 수량</dt><dd>{formatDecimalString(holding?.quantity ?? '0')}</dd></div>
+              <div><dt>보유 수량</dt><dd>{formatQuantity(holding?.quantity ?? '0')}</dd></div>
             </dl>
           </details>
         </div>}

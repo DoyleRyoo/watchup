@@ -14,43 +14,68 @@
   src: url('pretendard/dist/web/static/woff2/Pretendard-Bold.woff2') format('woff2');
 }
 
-/* Light tokens — watch_up_infra/UI/design.md (white version). */
+/* Light palette — UI/design.md. */
 :root {
-  /* design.md */
-  --bg: #FDFDFD;
-  --hover: #DDDEE0;
-  --row-highlight: #D4D5DB;
-  --search-fill: #FDFDFD;
-  --mobile-search-fill: #DBDBDB;
-  --home-up: #E11616;
-  --home-down: #1667E1;
-  --mobile-sell-fill: #1667E1;
-  --chart-fill: #FDFDFD;
-  --text-main: #333333;
-  --text-sub: #848484;
-  --danger: #E11616;
-  --primary: #1667E1;
+  --bg: #FFFFFF;
+  --surface: #F7F7F8;
+  --hover: #ECECF1;
+  --row-highlight: #E3E3E8;
+  --border: #E3E3E8;
+  --text-main: #0D0D0D;
+  --text-sub: #64646F;
+  --accent: #0D0D0D;
+  --accent-fg: #FFFFFF;
+  --accent-hover: #2A2A2A;
+  --up: #BF271C;
+  --down: #1D4ED8;
+  --buy: #D92D20;
+  --buy-hover: #B42318;
+  --buy-soft: #FEF3F2;
+  --buy-disabled: #F3B5B0;
+  --buy-fg: #B42318;
+  --sell: #1D4ED8;
+  --sell-hover: #1A3FB0;
+  --sell-soft: #EFF4FF;
+  --sell-fg: #1D4ED8;
+  --trade-fg: #FFFFFF;
+  --danger: #BF271C;
+  --success: #067647;
+  --focus: #1D4ED8;
+  --shadow: 0 18px 45px rgb(13 13 13 / 8%);
 
-  /* derived / kept names used across App.css */
-  --surface: #FFFFFF;
-  --border: #DDDEE0;
-  --primary-hover: #1155C4;
-  --danger-hover: #C01212;
-  --focus: #1667E1;
-  --shadow: 0 18px 45px rgb(51 51 51 / 8%);
+  /* Six roles with paired leading and weight; spacing follows the same scale. */
+  --text-display: 26px;
+  --leading-display: 1.25;
+  --weight-display: 700;
+  --text-title: 20px;
+  --leading-title: 1.3;
+  --weight-title: 700;
+  --text-body: 16px;
+  --leading-body: 1.5;
+  --weight-body: 400;
+  --text-body-sm: 14px;
+  --leading-body-sm: 1.45;
+  --weight-body-sm: 400;
+  --text-label: 13px;
+  --leading-label: 1.4;
+  --weight-label: 400;
+  --text-micro: 11px;
+  --leading-micro: 1.3;
+  --weight-micro: 400;
 
-  /* type scale — design.md: important 26/bold, basic 16/regular, minor 10/regular */
-  --font-size-lg: 26px;
-  --font-size-md: 16px;
-  --font-size-sm: 10px;
-  --font-weight-lg: 700;
-  --font-weight-md: 400;
-  --font-weight-sm: 400;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 32px;
+  --space-8: 40px;
 
   font-family: Pretendard, system-ui, -apple-system, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
-  font-size: var(--font-size-md);
-  font-weight: var(--font-weight-md);
-  line-height: 1.4;
+  font-size: var(--text-body);
+  font-weight: var(--weight-body);
+  line-height: var(--leading-body);
   color: var(--text-main);
   background: var(--bg);
   color-scheme: light dark;
@@ -59,59 +84,64 @@
   -webkit-font-smoothing: antialiased;
 }
 
-/* Dark tokens — design.md (black version) + UI/*_black*.jsx.
-   Layout/typography identical; only colors swap.
-   NOTE: design.md's black block lists "main font color: #333333", which is
-   unreadable on #171719 and contradicts every *_black*.jsx (main #F5F5F5,
-   sub #848484). The mockups are followed here.
-
-   Two dark blocks, identical values, on purpose — CSS has no way to reuse one
-   token set under two conditions:
-     1. OS dark, unless the user manually picked light  → :not([data-theme="light"])
-     2. user manually picked dark, whatever the OS says → [data-theme="dark"]
-   The `:not` guard is what lets a manual light choice win over an OS dark
-   setting. src/test/uiTokens.test.ts locks the two blocks to the same values. */
+/* OS and manual dark palettes intentionally share identical values. */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #171719;
-    --hover: #222224;
-    --row-highlight: #222224;
-    --search-fill: #171719;
-    --mobile-search-fill: #222224;
-    --home-up: #FF0000;
-    --home-down: #008CFF;
-    --mobile-sell-fill: #2B59FF;
-    --chart-fill: #171719;
-    --text-main: #F5F5F5;
-    --text-sub: #848484;
-    --danger: #E11616;
-    --primary: #1667E1;
-    --surface: #222224;
-    --border: #222224;
-    --primary-hover: #2B7BF5;
-    --danger-hover: #F03030;
+    --bg: #212121;
+    --surface: #303030;
+    --hover: #414141;
+    --row-highlight: #3A3A3C;
+    --border: #3F3F42;
+    --text-main: #ECECEC;
+    --text-sub: #B0B0B8;
+    --accent: #ECECEC;
+    --accent-fg: #0D0D0D;
+    --accent-hover: #FFFFFF;
+    --up: #FF9991;
+    --down: #9BB6FF;
+    --buy: #CD343B;
+    --buy-hover: #D23C42;
+    --buy-soft: #2A1A1A;
+    --buy-disabled: #5C2B2B;
+    --buy-fg: #FF9991;
+    --sell: #3E63DD;
+    --sell-hover: #486ADE;
+    --sell-soft: #171F35;
+    --sell-fg: #9BB6FF;
+    --trade-fg: #FFFFFF;
+    --danger: #FF9991;
+    --success: #3DD68C;
+    --focus: #6E96FF;
     --shadow: 0 18px 45px rgb(0 0 0 / 45%);
   }
 }
 
 :root[data-theme="dark"] {
-  --bg: #171719;
-  --hover: #222224;
-    --row-highlight: #222224;
-    --search-fill: #DBDBDB;
-    --mobile-search-fill: #222224;
-    --home-up: #FF0000;
-    --home-down: #008CFF;
-    --mobile-sell-fill: #2B59FF;
-    --chart-fill: #D7D7D7;
-  --text-main: #F5F5F5;
-  --text-sub: #848484;
-  --danger: #E11616;
-  --primary: #1667E1;
-  --surface: #222224;
-  --border: #222224;
-  --primary-hover: #2B7BF5;
-  --danger-hover: #F03030;
+  --bg: #212121;
+  --surface: #303030;
+  --hover: #414141;
+  --row-highlight: #3A3A3C;
+  --border: #3F3F42;
+  --text-main: #ECECEC;
+  --text-sub: #B0B0B8;
+  --accent: #ECECEC;
+  --accent-fg: #0D0D0D;
+  --accent-hover: #FFFFFF;
+  --up: #FF9991;
+  --down: #9BB6FF;
+  --buy: #CD343B;
+  --buy-hover: #D23C42;
+  --buy-soft: #2A1A1A;
+  --buy-disabled: #5C2B2B;
+  --buy-fg: #FF9991;
+  --sell: #3E63DD;
+  --sell-hover: #486ADE;
+  --sell-soft: #171F35;
+  --sell-fg: #9BB6FF;
+  --trade-fg: #FFFFFF;
+  --danger: #FF9991;
+  --success: #3DD68C;
+  --focus: #6E96FF;
   --shadow: 0 18px 45px rgb(0 0 0 / 45%);
 }
 

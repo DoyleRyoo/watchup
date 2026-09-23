@@ -12,15 +12,15 @@ import type { CoinChart } from './types'
 
 // Recharts renders SVG/inline-styled nodes, so the design tokens are handed to
 // it as props instead of CSS rules. Values only — no mockup layout styles.
-const AXIS_TICK = { fill: 'var(--text-sub)', fontSize: 10 }
+const AXIS_TICK = { fill: 'var(--text-sub)', fontSize: 11 }
 const TOOLTIP_CONTENT = {
   background: 'var(--surface)',
   border: '1px solid var(--border)',
   borderRadius: 12,
   color: 'var(--text-main)',
-  fontSize: 12,
+  fontSize: 13,
 }
-const TOOLTIP_LABEL = { color: 'var(--text-sub)', fontSize: 10 }
+const TOOLTIP_LABEL = { color: 'var(--text-sub)', fontSize: 11 }
 
 export function PriceChart({ chart }: { chart: CoinChart }) {
   const count = chart.candles.length
@@ -55,7 +55,7 @@ export function PriceChart({ chart }: { chart: CoinChart }) {
             <YAxis
               dataKey="closingPriceValue"
               domain={['auto', 'auto']}
-              tickFormatter={(value: number) => formatPrice(value)?.replace(/원$/, '') ?? ''}
+              tickFormatter={(value: number) => formatPrice(value)?.replace('원', '') ?? ''}
               width={88}
               tick={AXIS_TICK}
               stroke="var(--border)"
@@ -71,7 +71,7 @@ export function PriceChart({ chart }: { chart: CoinChart }) {
               type="linear"
               dataKey="closingPriceValue"
               name="종가"
-              stroke="var(--primary)"
+              stroke="var(--accent)"
               strokeWidth={2}
               dot={count === 1 ? { r: 5, strokeWidth: 2 } : false}
               activeDot={{ r: 5 }}

@@ -3,7 +3,7 @@
  *
  * Money and rate fields arrive as strings (AGENTS.md §5) and must never be
  * parsed into a JS number for arithmetic. Every helper here is pure string
- * manipulation — no `Number()` / `parseFloat` on any value.
+ * manipulation, without floating-point conversion.
  */
 
 type Decomposed = { sign: string; int: string; frac: string };
@@ -24,13 +24,37 @@ function group(int: string): string {
   return int.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
-/** "1000000.000000000000000000" → "1,000,000"; "-0.5" → "-0.5"; "-0.0" → "0" */
+/** Shared truncation primitives: digit slicing never rounds or pads values. */
+export function truncateFraction(frac: string, digits: number): string {
+  return frac.slice(0, digits);
+}
+
+export function significantFraction(frac: string, sigDigits: number, maxDigits: number): string {
+  const leading = frac.search(/[1-9]/);
+  if (leading < 0 || leading >= maxDigits) return "";
+  return truncateFraction(truncateFraction(frac, leading + sigDigits), maxDigits).replace(/0+$/, "");
+}
+
+/** Whole KRW, truncated toward zero; never show a negative zero. */
 export function formatDecimalString(value: string): string {
-  const { sign, int, frac } = decompose(value);
-  const trimmedFrac = frac.replace(/0+$/, "");
+  const { sign, int } = decompose(value);
   const head = group(stripLeadingZeros(int));
-  const body = trimmedFrac === "" ? head : `${head}.${trimmedFrac}`;
-  return body === "0" ? "0" : `${sign}${body}`;
+  return head === "0" ? "0" : `${sign}${head}`;
+}
+
+/** Bounded display quantity. Submitted quantities retain their full precision. */
+export function formatQuantity(value: string): string {
+  const { sign, int, frac } = decompose(value);
+  if (stripLeadingZeros(int) !== "0") return formatDecimalString(value);
+  if (!/[1-9]/.test(frac)) return "0";
+  const tail = significantFraction(frac, 4, 8);
+  return tail ? `${sign}0.${tail}` : `${sign}0.00000001 미만`;
+}
+
+/** Lossless input echo, including every fractional digit and trailing zero. */
+export function groupDigits(raw: string): string {
+  const { sign, int, frac } = decompose(raw);
+  return `${sign}${group(int)}${raw.includes(".") ? `.${frac}` : ""}`;
 }
 
 /** Money string → "1,000,000원". `null` renders the fallback instead. */
@@ -65,9 +89,9 @@ export function formatRatePercent(value: string | null): string | null {
 /** Up = red, down = blue (design.md), flat = sub text. */
 export function signClass(value: string | null): string {
   if (value === null) return "change-flat";
-  const formatted = formatDecimalString(value);
-  if (formatted === "0") return "change-flat";
-  return formatted.startsWith("-") ? "change-down" : "change-up";
+  const { sign, int, frac } = decompose(value);
+  if (!/[1-9]/.test(int + frac)) return "change-flat";
+  return sign === "-" ? "change-down" : "change-up";
 }
 
 /** "+1,000원 (2.03%)" when the rate exists, otherwise just the amount. */
